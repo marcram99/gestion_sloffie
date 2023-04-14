@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content = "width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" media="screen" href = "{{ url_for('static', path='bootstrap/bootstrap.css') }}">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+        <link href="https://fonts.googleapis.com/css2?family=Asap&family=Overpass&display=swap" rel="stylesheet">
+        <link rel="stylesheet" href = "{{ url_for('static', path='bootstrap/style.css') }}">
+        <script src="{{ url_for('static', path='bootstrap/jquery-3.5.1.js') }}"></script>
+        <script src="{{ url_for('static', path='bootstrap/bootstrap.bundle.js') }}"></script>
+        <title>home {{ page_name }}</title>
+        <link  rel="icon" type="image/x-icon" href="{{ url_for('static', path='images/Logo02.png') }}">
+    </head>       
+<!-- body background="{{ url_for('static', path='images/bg01.jpg') }}"-->
+    <body>
+        {% block menu %}
+            {% block navbar %}
+                <nav class="navbar navbar-expand-lg navbar-dark m-3 rounded-3"style="background-color: #000000;">
+                    <div class="container-fluid">
+                        <a class="navbar-brand" href="{{ url_for('home') }}"><img src="{{ url_for('static', path='images/Logo02.png') }}" style="width:130px;"></a>
+                        <button class="navbar-toggler d-none" type="button" data-bs-toggle="collapse" data-bs-target="#navbarToggler">
+                            <span class="navbar-toggler-icon"></span>
+                        </button>
+                        <div class="collapse navbar-collapse d-flex " id="navbarToggler">
+                            <ul class="navbar-nav order-lg-0 order-2 ">
+                                <li class="nav-item  active ">
+                                    <a class="nav-link active " href=""> Clients</a>
+                                </li>
+                                <li class="nav-item  active ">
+                                    <a class="nav-link active " href="">Agenda</a>
+                                </li>
+                                <li class="nav-item dropdown ">
+                                    <a class="nav-link dropdown-toggle text-white" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown">
+                                        Administration
+                                    </a>
+                                    <div class="dropdown-menu dropdown-menu-right-lg"> 
+                                        <a class="dropdown-item" href="#">Formules</a>
+                                        <a class="dropdown-item" href="#">Factures</a>
+                                        <div class="dropdown-divider"></div>
+                                        <a class="dropdown-item" href="#">Smule</a>
+                                    </div>
+                                </li>
+                            </ul>
+                            <div class="position-absolute top-0 end-0 ">
+                                {% if user %} 
+                                    <div class="d-flex align-item-bottom m-4 text-white fs-5" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown">
+                                        {% if role=="user" %}
+                                            <i class="fa fa-user-circle  mx-2" style="font-size:30px;color:rgb(62, 159, 101);"></i>
+                                        {% else  %}
+                                            <i class="fa fa-user-circle  mx-2" style="font-size:30px;color:rgb(0, 162, 173);"></i>
+                                        {% endif %}
+                                        <span id="userName">{{ user }}</span>
+                                        <span class="d-none"id="userID">{{ userID }}</span>
+                                    </div>
+                                    <div class="dropdown-menu ">
+                                        <a class="dropdown-item position-relative" href="#">
+                                            <i class="fa fa-envelope-o me-2" ></i>
+                                            Messages 
+                                            <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger"> 12 </span>
+                                        </a>
+                                        <div class="dropdown-divider"></div>
+                                        <a class="dropdown-item position-relative" href="#">
+                                            <i class="fa fa-bell me-2" ></i>
+                                            Notifications
+                                            <span class="d-none position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger"> 1 </span>
+                                        </a>
+                                        <div class="dropdown-divider"></div>
+                                        <a class="dropdown-item" href="#"><i class="fa fa-gear me-2" ></i>Paramètres</a>
+                                        <div class="dropdown-divider"></div>
+                                        <a class="dropdown-item" href="/logout"><i class="fa fa-sign-out me-2" ></i>Logout</a>
+                                    </div>
+                                {% else %}
+                                    <div class="position-absolute top-0 end-0 ">
+                                        <button type="button" class="btn btn-success d-flex align-item-bottom m-4 text-white" data-bs-toggle="modal" data-bs-target="#loginModal">
+                                              Connect
+                                        </button>           
+                                    </div>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                </nav>
+    <!-- Modal -->
+                    <div class="modal fade" id="loginModal" tabindex="-1"> 
+                        <div class="modal-dialog modal-dialog-centered">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title mx-auto" id="exampleModalLabel">Login screen</h5>
+                            </div>
+                            <form id="login" name="login">
+                                <div class="modal-body">
+                                    <div class="form-group row mt-2 py-2">
+                                        <div class="col-1 mx-3">
+                                            <i class="fa fa-user-circle " style="font-size:40px"></i>
+                                        </div>
+                                        <div class="col ">
+                                            <input type="text" class="form-control"  name="username" >
+                                        </div>
+                                        <div class="col-1 ms-3"></div>
+                                    </div>
+                                    <div class="form-group row  py-1">
+                                        <div class="col-1 mx-3">
+                                            <i class="fa fa-unlock-alt mx-2" style="font-size:40px"></i>
+                                        </div>
+                                        <div class="col ">
+                                            <input type="password" class="form-control" name="password">
+                                        </div>
+                                        <div class="col-1 ms-3"></div>
+                                    </div>
+                                    <div class="row mt-3 mb-3">
+                                        <div class="col-1 mx-3"></div>
+                                        <div class="d-grid gap-2 col">
+                                            <button type="submit" class="btn btn-success btn-lg d-block ">Login</button>
+                                        </div>
+                                        <div class="col-1 ms-3"></div>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                      </div>
+                    </div>
+                </div>
+                <script src="{{ url_for('static', path='scripts/base.js') }}"></script>
+            {% endblock %}
+        {% endblock %}
+        {% block mainpage %} {% endblock %}	
+    </body>
+</html>
