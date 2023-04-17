@@ -1,0 +1,43 @@
+{% extends "base.html" %}
+{% block menu %}
+    {% block navbar %}
+        {{super() }}
+    {% endblock %}
+{% endblock %}
+{% block client %}
+    <div class="container">
+        <h1 class="mt-2 mb-3">Page client</h1>
+        <div class="card">
+                <div class="card-header bg-transparent">
+                    <div class="d-flex flex-row justify-content-between">
+                        <h4 class=" flex-grow  m-1 ">Clients</h4>
+                        <button id="add_user" class="btn " onclick="creeUser(this)"><i class="fa fa-plus-circle mt-n2" style="font-size:45px;color:green;"></i>
+                    </div>
+                </div>
+                <div class="card-body d-flex flex-row fw-bolder">
+                    <span class="col-1 ">#</span>
+                    <span class="col  ">Nom</span>
+                    <span class="col d-none d-md-block ">Prénom</span>
+                    <span class="col d-none d-lg-block ">Mail</span>
+                    <span class="col d-none d-lg-block ">Téléphone</span>
+                    <span class="col ml-auto text-end ">Action</span>
+                </div>
+                <ul class="list-group list-group-flush">
+                    {% for clients in results %}
+                        <li class="list-group-item ">
+                            <div class="d-flex flex-row">
+                                <span class="col-1 ">{{ loop.index }}</span>
+                                <span class="col " id="nom_{{ clients.id }}">{{ clients.nom }}</span>
+                                <span class="col d-none d-md-block " id="prenom_{{ clients.id }}">{{ clients.prenom }}</span>
+                                <span class="col d-none d-lg-block " id="mail_{{ clients.id }}">{{ clients.mail }}</span>
+                                <span class="col d-none d-lg-block " id="mail_{{ clients.id }}">{{ clients.no_tel }}</span>
+                                <span class="col ml-auto text-end ">
+                                    <button id="modif_{{ clients.id }}" class="btn" onclick="InformationUser(this)"><i class="fa fa-info-circle mt-n2" ></i>
+                                    <button id="modif_{{ clients.id }}" class="btn" onclick="InformationUser(this)"><i class="fa fa-envelope-o mt-n2" ></i>
+                                </span>
+                            </div>
+                       </li> 
+                    {% endfor %}
+                </ul>
+    </div>
+{% endblock %}

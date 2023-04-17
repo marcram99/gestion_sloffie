@@ -41,8 +41,12 @@ async def create_client(client: schema.ClientCreate,
 
 @app.get("/clients")
 async def read_all_client(request: Request, db: Session = Depends(get_db)):
-    result = db.query(models.Client).all()
-    for elem in result:
+    results = db.query(models.Client).all()
+    for elem in results:
         print(f'{elem.nom=} {elem.prenom=}')
     print("retour de query")
-    return "retour sur terminal"
+    return templates.TemplateResponse("client.html",
+                                      {"request": request,
+                                       "results": results,
+                                       }
+                                      )
