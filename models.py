@@ -15,7 +15,7 @@ class Client(Base):
     no_tel = Column(String)
     mail = Column(String)
 
-    agenda = relationship("Cours", back_populates="owner")
+#    agenda = relationship("Cours", back_populates="owner")
 
 
 class Cours(Base):
@@ -25,4 +25,4 @@ class Cours(Base):
     formule = Column(String)
     paye = Column(Boolean)
 
-    owner = relationship("Client", back_populates="agenda")
+#    owner = relationship("Client", back_populates="agenda")
