@@ -20,6 +20,25 @@ class Cours(CoursBase):
         orm_mode = True
 
 
+class FactureBase(BaseModel):
+    timestamp: str
+    produit: str
+    remise: str
+    prix: str
+   
+
+class FactureCreate(BaseModel):
+    pass
+
+
+class Facture(BaseModel):
+    id: int
+    client_id: int
+
+    class Config:
+        orm_mode = True
+   
+
 class ClientBase(BaseModel):
     nom: str
     prenom: str

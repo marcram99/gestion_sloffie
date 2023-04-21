@@ -33,7 +33,7 @@ async def home(request: Request):
 
 
 @app.post("/new_client")
-async def create_client(client: schema.ClientCreate, 
+async def create_client(client: schema.ClientCreate,
                         db: Session = Depends(get_db)
                         ):
     return crud.create_client(db=db, client=client)

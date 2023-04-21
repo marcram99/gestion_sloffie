@@ -11,7 +11,7 @@
                 <div class="card-header bg-transparent">
                     <div class="d-flex flex-row justify-content-between">
                         <h4 class=" flex-grow  m-1 ">Clients</h4>
-                        <button id="add_user" class="btn " onclick="creeUser(this)"><i class="fa fa-plus-circle mt-n2" style="font-size:45px;color:green;"></i>
+                        <button id="add_client" class="btn " onclick="creeClient(this)"><i class="fa fa-plus-circle mt-n2" style="font-size:45px;color:green;"></i>
                     </div>
                 </div>
                 <div class="card-body d-flex flex-row fw-bolder">
@@ -39,5 +39,72 @@
                        </li> 
                     {% endfor %}
                 </ul>
+                <!-- user modal --------------------------------------------------------------------------------------- -->
+                <div class="modal fade" id="user_modal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="modal_title">Fiche client</h5>
+                            <h5  id="userInfo_id" class="d-none">User_id</h5>
+                            <div class="row d-flex justify-content-between">
+                                <div class="btn" onclick="changeLock(this)"><i id="lockIcon"class="fa fa-lock mt-n4" style="font-size:35px;color:lightgrey;"></i></div>
+                        </div>
+                    </div>
+                    <div class="modal-body">
+                        <form id="formEdit" class="d-none">
+                            <div class="mb-3 row"style="height:40px;">
+                                <div class="col-3 text-end pt-2">Nom:</div>
+                                <div class="col">
+                                    <input type="text" class="form-control text-start pt-2" id="nomMod" >
+                                </div>
+                            </div>
+                            <div class="mb-3 row"style="height:40px;">
+                                <div class="col-3 text-end pt-2">Prénom:</div>
+                                <div class="col">
+                                    <input type="text" class="form-control" id="prenomMod" >
+                                </div>
+                            </div>
+                            <div class="mb-3 row"style="height:40px;">
+                                <div class="col-3 text-end pt-2">Téléphone:</div>
+                                <div class="col">
+                                    <input type="text" class="form-control" id="telMod" >
+                                </div>
+                            </div>
+                            <div class="row justify-content-center"style="height:40px;">
+                                <div class="col-3 text-end align-middle pt-2">Mail:</div>
+                                <div class="col">
+                                    <input type="password" class="form-control" id="mailMod">
+                                </div>
+                            </div>
+                        </form>
+                        <div  id="formAff"class="d-block" >
+                            <div class="mb-3 row" style="height:40px;">
+                                <div class="col-3 text-end align-middle pt-2">Nom:</div>
+                                <div class="col pt-2 ml-3" id="clientNomAff"></div>
+                            </div>
+                            <div class="mb-3 row "style="height:40px;">
+                                <div class="col-3 text-end align-middle pt-2">Prénom:</div>
+                                <div class="col pt-2 ml-3" id="clientPrenomAff"></div>
+                            </div>
+                            <div class="mb-3 row"style="height:40px;">
+                                <div class="col-3 text-end align-middle pt-2">Téléphone:</div>
+                                <div class="col pt-2 ml-3" id="clientTelAff"></div>
+                            </div>
+                            <div class="mb-3 row"style="height:40px;">
+                               <div class="col-3 text-end align-middle pt-2">Mail:</div>
+                               <div class="col pt-2 ml-3" id="clientMailAff"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button"id="validUser" class="btn btn-success d-none" onclick="validUserform(this)"><i class="fa fa-lg fa-pencil m-2" ></i>Modify</button>
+                        <button type="button"id="deleteUser" class="btn btn-danger d-none" onclick="effaceUser(this)"><i class="fa fa-lg fa-trash-o m-2 ml-1" ></i>Delete</button>
+                        <button type="button"id="createUser" class="btn btn-success d-none" onclick="validUserform(this)"><i class="fa fa-lg fa-pencil m-2 ml-1" ></i>Create</button>
+                        <button type="button" class="btn btn-secondary" onclick="closeModal()"><i class="fa fa-lg fa-close m-2 ml-1" ></i>Cancel</button>
+                    </div>
+                </div> 
+            </div>
+        </div>
     </div>
+    <script src="{{ url_for('static', path='scripts/client.js') }}"></script>
 {% endblock %}

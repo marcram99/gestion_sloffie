@@ -15,7 +15,8 @@ class Client(Base):
     no_tel = Column(String)
     mail = Column(String)
 
-#    agenda = relationship("Cours", back_populates="owner")
+    agenda = relationship("Cours", back_populates="user")
+    bill = relationship("Facture", back_populates="user")
 
 
 class Cours(Base):
@@ -24,5 +25,18 @@ class Cours(Base):
     timestamp = Column(String)
     formule = Column(String)
     paye = Column(Boolean)
+    user_id = Column(Integer, ForeignKey("client.id"))
 
-#    owner = relationship("Client", back_populates="agenda")
+    user = relationship("Client", back_populates="agenda")
+
+
+class Facture(Base):
+    __tablename__ = "facture"
+    id = Column(Integer, primary_key=True, index=True)
+    timestamp = Column(String)
+    produit = Column(String)
+    remise = Column(String)
+    prix = Column(String)
+    user_id = Column(Integer, ForeignKey("client.id"))
+
+    user = relationship("Client", back_populates="bill")
