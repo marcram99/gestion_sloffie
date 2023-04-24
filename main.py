@@ -50,3 +50,11 @@ async def read_all_client(request: Request, db: Session = Depends(get_db)):
                                        "results": results,
                                        }
                                       )
+
+
+@app.post("/api/users")
+async def create_user(client: schema.ClientCreate,
+                      db: Session = Depends(get_db)
+                      ):
+    print(f'DEBUG: you came to main.py post')
+    return "aaa"
