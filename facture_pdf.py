@@ -1,0 +1,33 @@
+from reportlab.pdfgen import canvas
+from reportlab.lib.pagesizes import A4
+
+w, h = A4
+
+c = canvas.Canvas("facture_sloffiemusic.pdf", pagesize=A4)
+c.drawImage("logo.jpg", 30, h - 70, width=100, height=45)
+c.setFont("Times-Roman", 48)
+c.drawString(w-180, h-60, "Facture")
+c.line(30, h-100, w-30, h-100)
+c.setFont("Times-Bold", 16)
+c.drawString(30, h-120, "Sloffiemusic-Coaching vocal")
+c.setFont("Times-Roman", 14)
+c.drawString(30, h-136, "My Fun Music School")
+c.drawString(30, h-152, "Route de Chêne 78")
+c.setFont("Times-Roman", 14)
+c.drawString(w-195, h-120, "no facture:")
+c.drawString(w-195, h-136, "date facture:")
+c.drawString(w-195, h-152, "échéance facture:")
+c.drawRightString(w-30, h-120, "FACT_001")
+c.drawRightString(w-30, h-136, "24.04.2023")
+c.drawRightString(w-30, h-152, "24.05.2023")
+c.line(30, h-168, w-30, h-168)
+c.setFont("Times-Bold", 14)
+c.drawString(30, h-190, "Facture à:")
+c.setFont("Times-Roman", 14)
+c.drawString(100, h-190, "Mr. Marc Wanner")
+c.drawString(100, h-206, "141 chemin de l'Eau Belle")
+c.drawString(100, h-222, "74100 Etrembières, France")
+c.drawString(100, h-238, "marcram@proton.me")
+c.line(30, h-250, w-30, h-250)
+c.showPage()
+c.save()
