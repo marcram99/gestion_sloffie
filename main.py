@@ -56,5 +56,5 @@ async def read_all_client(request: Request, db: Session = Depends(get_db)):
 async def create_user(client: schema.ClientCreate,
                       db: Session = Depends(get_db)
                       ):
-    print(f'DEBUG: you came to main.py post')
-    return "aaa"
+    print(f'DEBUG:POST {client.nom=} {client.prenom=} ')
+    return crud.create_client(db=db, client=client)
