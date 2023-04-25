@@ -6,7 +6,6 @@
 {% endblock %}
 {% block client %}
     <div class="container">
-        <h1 class="mt-2 mb-3">Page client</h1>
         <div class="card">
                 <div class="card-header bg-transparent">
                     <div class="d-flex flex-row justify-content-between">
@@ -18,6 +17,8 @@
                     <span class="col-1 ">#</span>
                     <span class="col  ">Nom</span>
                     <span class="col d-none d-md-block ">Prénom</span>
+                    <span class="col d-none d-lg-block ">Adresse</span>
+                    <span class="col d-none d-lg-block ">Code postal</span>
                     <span class="col d-none d-lg-block ">Mail</span>
                     <span class="col d-none d-lg-block ">Téléphone</span>
                     <span class="col ml-auto text-end ">Action</span>
@@ -29,8 +30,10 @@
                                 <span class="col-1 ">{{ loop.index }}</span>
                                 <span class="col " id="nom_{{ clients.id }}">{{ clients.nom }}</span>
                                 <span class="col d-none d-md-block " id="prenom_{{ clients.id }}">{{ clients.prenom }}</span>
+                                <span class="col d-none d-lg-block " id="adresse_{{ clients.id }}">{{ clients.adresse }}</span>
+                                <span class="col d-none d-lg-block " id="code_{{ clients.id }}">{{ clients.code_postal }}</span>
                                 <span class="col d-none d-lg-block " id="mail_{{ clients.id }}">{{ clients.mail }}</span>
-                                <span class="col d-none d-lg-block " id="mail_{{ clients.id }}">{{ clients.no_tel }}</span>
+                                <span class="col d-none d-lg-block " id="no_tel_{{ clients.id }}">{{ clients.no_tel }}</span>
                                 <span class="col ml-auto text-end ">
                                     <button id="modif_{{ clients.id }}" class="btn" onclick="InformationUser(this)"><i class="fa fa-info-circle mt-n2" ></i>
                                     <button id="modif_{{ clients.id }}" class="btn" onclick="InformationUser(this)"><i class="fa fa-envelope-o mt-n2" ></i>
@@ -65,6 +68,18 @@
                                 </div>
                             </div>
                             <div class="mb-3 row"style="height:40px;">
+                                <div class="col-3 text-end pt-2">Adresse:</div>
+                                <div class="col">
+                                    <input type="text" class="form-control" id="adresseMod" >
+                                </div>
+                            </div>
+                            <div class="mb-3 row"style="height:40px;">
+                                <div class="col-3 text-end pt-2">Code postal:</div>
+                                <div class="col">
+                                    <input type="text" class="form-control" id="codeMod" >
+                                </div>
+                            </div>
+                            <div class="mb-3 row"style="height:40px;">
                                 <div class="col-3 text-end pt-2">Téléphone:</div>
                                 <div class="col">
                                     <input type="text" class="form-control" id="telMod" >
@@ -85,6 +100,14 @@
                             <div class="mb-3 row "style="height:40px;">
                                 <div class="col-3 text-end align-middle pt-2">Prénom:</div>
                                 <div class="col pt-2 ml-3" id="clientPrenomAff"></div>
+                            </div>
+                            <div class="mb-3 row "style="height:40px;">
+                                <div class="col-3 text-end align-middle pt-2">Adresse:</div>
+                                <div class="col pt-2 ml-3" id="clientAdresseAff"></div>
+                            </div>
+                            <div class="mb-3 row "style="height:40px;">
+                                <div class="col-3 text-end align-middle pt-2">Code postal:</div>
+                                <div class="col pt-2 ml-3" id="clientCodeAff"></div>
                             </div>
                             <div class="mb-3 row"style="height:40px;">
                                 <div class="col-3 text-end align-middle pt-2">Téléphone:</div>

@@ -13,7 +13,9 @@ def create_client(db: Session, client: schema.ClientCreate):
     db_client = models.Client(nom=client.nom,
                               prenom=client.prenom,
                               no_tel=client.no_tel,
-                              mail=client.mail)
+                              mail=client.mail,
+                              adresse=client.adresse,
+                              code_postal=client.code_postal)
     db.add(db_client)
     db.commit()
     db.refresh(db_client)
