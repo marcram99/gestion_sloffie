@@ -45,18 +45,18 @@ function InformationUser(id){
     var nom = document.getElementById("nom_" + client_id).innerHTML
     var prenom = document.getElementById("prenom_" + client_id).innerHTML
     var adresse = document.getElementById("adresse_" + client_id).innerHTML
-    var code = document.getElementById("code_" + user_id).innerHTML
-    var mail = document.getElementById("mail_" + user_id).innerHTML
-    var tel = document.getElementById("no_tel_" + user_id).innerHTML
+    var code = document.getElementById("code_" + client_id).innerHTML
+    var mail = document.getElementById("mail_" + client_id).innerHTML
+    var tel = document.getElementById("no_tel_" + client_id).innerHTML
     $('#user_modal').modal('show')
     document.getElementById("modal_title").innerHTML = "Information User"
 //    document.getElementById("userInfo_id").innerHTML = user_id
     document.getElementById("clientNomAff").innerHTML = nom
     document.getElementById("clientPrenomAff").innerHTML = prenom
     document.getElementById("clientAdresseAff").innerHTML = adresse
-    document.getElementById("clientCodeAff").innerHTML = adresse
-    document.getElementById("clientMailAff").innerHTML = adresse
-    document.getElementById("clientTelAff").innerHTML = adresse
+    document.getElementById("clientCodeAff").innerHTML = code
+    document.getElementById("clientMailAff").innerHTML = mail
+    document.getElementById("clientTelAff").innerHTML = tel
 }
 
 function creeUser(id){
