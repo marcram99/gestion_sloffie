@@ -2,6 +2,7 @@ from fastapi import FastAPI, Request, Response, Depends
 from fastapi import HTTPException
 from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
+from fastapi_pagination import Page, add_pagination, paginate
 from sqlalchemy.orm import Session
 
 from .database import SessionLocal, engine
@@ -10,6 +11,7 @@ from . import models, schema, crud
 models.Base.metadata.create_all(bind=engine)
 
 app = FastAPI()
+add_pagination(app)
 app.mount("/static",
           StaticFiles(directory="gestion_sloffie/static"),
           name="static"
@@ -33,16 +35,11 @@ async def home(request: Request):
                                       )
 
 
-@app.post("/new_client")
-async def create_client(client: schema.ClientCreate,
-                        db: Session = Depends(get_db)
-                        ):
-    return crud.create_client(db=db, client=client)
-
-
 @app.get("/clients")
 async def read_all_client(request: Request, db: Session = Depends(get_db)):
     results = db.query(models.Client).all()
+    total = db.query(models.Client).count()
+    print(f'DEBUG: {total=}')
     return templates.TemplateResponse("client.html",
                                       {"request": request,
                                        "results": results,
@@ -50,7 +47,7 @@ async def read_all_client(request: Request, db: Session = Depends(get_db)):
                                       )
 
 
-@app.post("/api/users")
+@app.post("/client")
 async def create_user(client: schema.ClientCreate,
                       db: Session = Depends(get_db)
                       ):
@@ -58,7 +55,7 @@ async def create_user(client: schema.ClientCreate,
     return crud.create_client(db=db, client=client)
 
 
-@app.put("/api/users/{client_id}")
+@app.put("/client/{client_id}")
 async def update_user(client_id: int,
                       client: schema.ClientCreate,
                       db: Session = Depends(get_db)
@@ -67,9 +64,9 @@ async def update_user(client_id: int,
     return crud.update_client(db, client, client_id)
 
 
-@app.delete("/api/users/{client_id}")
+@app.delete("/client/{client_id}")
 def delete_user(client_id: int, db: Session = Depends(get_db)):
-    db_client = crud.get_client(db, client_id=client_id)
+    db_client = crud.get_client_by_id(db, client_id=client_id)
     if db_client is None:
         raise HTTPException(status_code=404, detail="User not found")
     else:

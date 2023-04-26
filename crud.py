@@ -4,12 +4,12 @@ from sqlalchemy.orm import Session
 from . import models, schema
 
 
-def get_client(db: Session, client_id: int):
+def get_client_by_id(db: Session, client_id: int):
     print(f'DEBUG: crud_get_user: id = {client_id}')
     return db.query(models.Client).filter(models.Client.id == client_id).first()
 
 
-def get_clients(db: Session, skip: int = 0, limit: int = 100):
+def get_all_clients(db: Session, skip: int = 0, limit: int = 100):
     return db.query(models.Client).offset(skip).limit(limit).all()
 
 

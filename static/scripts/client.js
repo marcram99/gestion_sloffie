@@ -69,10 +69,10 @@ function effaceClient(){
     event.preventDefault()
     var client_id = document.getElementById("userInfo_id").innerHTML
     console.log(client_id)
-    fetch('/api/users/' + client_id,{
+    fetch('/client/' + client_id,{
         method: "DELETE",
     })
-    window.location.reload()
+    closeModal()
 }
 
 function creeUser(id){
@@ -122,9 +122,9 @@ function sendUserData(data, method, id){
     console.log('mail= ' + data.mail)
     console.log('ID= ' + id)
     if(id){
-        var url = '/api/users/'+ id
+        var url = '/client/'+ id
     }else{
-        var url = '/api/users'
+        var url = '/client'
     }
     console.log('url=' + url)
     fetch(url,{
