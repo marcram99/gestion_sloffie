@@ -38,7 +38,7 @@ function changeLock(){
     }
 }
 
-function InformationUser(id){
+function InformationClient(id){
     event.preventDefault()
     var client_id = (id.id).split("_")[1]
     console.log('you click on user : ' + client_id)
@@ -50,13 +50,29 @@ function InformationUser(id){
     var tel = document.getElementById("no_tel_" + client_id).innerHTML
     $('#user_modal').modal('show')
     document.getElementById("modal_title").innerHTML = "Information User"
-//    document.getElementById("userInfo_id").innerHTML = user_id
+    document.getElementById("userInfo_id").innerHTML = client_id
     document.getElementById("clientNomAff").innerHTML = nom
+    document.getElementById("nomMod").value = nom
     document.getElementById("clientPrenomAff").innerHTML = prenom
+    document.getElementById("prenomMod").value = prenom
     document.getElementById("clientAdresseAff").innerHTML = adresse
+    document.getElementById("adresseMod").value = adresse
     document.getElementById("clientCodeAff").innerHTML = code
+    document.getElementById("codeMod").value = code
     document.getElementById("clientMailAff").innerHTML = mail
+    document.getElementById("mailMod").value = mail
     document.getElementById("clientTelAff").innerHTML = tel
+    document.getElementById("telMod").innerHTML = tel
+}
+
+function effaceClient(){
+    event.preventDefault()
+    var client_id = document.getElementById("userInfo_id").innerHTML
+    console.log(client_id)
+    fetch('/api/users/' + client_id,{
+        method: "DELETE",
+    })
+    window.location.reload()
 }
 
 function creeUser(id){
@@ -84,10 +100,11 @@ function validUserform(id){
     var reponse = {"nom": nom, "prenom": prenom, "adresse": adresse, "code_postal": code, "no_tel": tel, "mail":mail}
     if (mode == "Nouveau Client"){
         sendUserData(reponse, "POST", null)
-    } 
-    if (mode == "Modification User"){
+    } if (mode == "Modification Client"){
         var userID = document.getElementById("userInfo_id").innerHTML
         sendUserData(reponse, "PUT", userID)
+    } else {
+        console.log('ELSE')
     }
     console.log('debug' + reponse)
     $('#user_modal').modal('hide')
@@ -96,7 +113,7 @@ function validUserform(id){
 
 function sendUserData(data, method, id){ 
     event.preventDefault()
-    console.log('DEBUG JS: sendUserData')
+    console.log('DEBUG JS: sendUserData' + method)
     console.log('nom= ' + data.nom)
     console.log('prenom= ' + data.prenom)
     console.log('adresse= ' + data.adresse)
@@ -110,7 +127,6 @@ function sendUserData(data, method, id){
         var url = '/api/users'
     }
     console.log('url=' + url)
-    alert('aaa')
     fetch(url,{
         method:method, 
         headers: {"Content-Type" : "application/json"},

@@ -44,10 +44,10 @@ class ClientBase(BaseModel):
     prenom: str
     date_naissance: Optional[str] = None
     adresse: Optional[str] = None
-    code_postal: Optional[int] = None
+    code_postal: Optional[str] = None
     ville: Optional[str] = None
-    no_tel: str
-    mail: str
+    no_tel: Optional[str] = None
+    mail: Optional[str] = None
 
 
 class ClientCreate(ClientBase):

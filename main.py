@@ -1,4 +1,5 @@
 from fastapi import FastAPI, Request, Response, Depends
+from fastapi import HTTPException
 from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
 from sqlalchemy.orm import Session
@@ -42,9 +43,6 @@ async def create_client(client: schema.ClientCreate,
 @app.get("/clients")
 async def read_all_client(request: Request, db: Session = Depends(get_db)):
     results = db.query(models.Client).all()
-    for elem in results:
-        print(f'{elem.nom=} {elem.prenom=}')
-    print("retour de query")
     return templates.TemplateResponse("client.html",
                                       {"request": request,
                                        "results": results,
@@ -58,3 +56,22 @@ async def create_user(client: schema.ClientCreate,
                       ):
     print(f'DEBUG:POST {client.nom=} {client.prenom=} ')
     return crud.create_client(db=db, client=client)
+
+
+@app.put("/api/users/{client_id}")
+async def update_user(client_id: int,
+                      client: schema.ClientCreate,
+                      db: Session = Depends(get_db)
+                      ):
+    print(f'DEBUG:PUT {client.nom=} {client.prenom=} ')
+    return crud.update_client(db, client, client_id)
+
+
+@app.delete("/api/users/{client_id}")
+def delete_user(client_id: int, db: Session = Depends(get_db)):
+    db_client = crud.get_client(db, client_id=client_id)
+    if db_client is None:
+        raise HTTPException(status_code=404, detail="User not found")
+    else:
+        result = crud.delete_client(db, client_id)
+    return result
