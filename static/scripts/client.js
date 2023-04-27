@@ -62,7 +62,7 @@ function InformationClient(id){
     document.getElementById("clientMailAff").innerHTML = mail
     document.getElementById("mailMod").value = mail
     document.getElementById("clientTelAff").innerHTML = tel
-    document.getElementById("telMod").innerHTML = tel
+    document.getElementById("telMod").value = tel
 }
 
 function effaceClient(){
