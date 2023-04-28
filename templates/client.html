@@ -24,7 +24,7 @@
                     <span class="col ml-auto text-end ">Action</span>
                 </div>
                 <ul class="list-group list-group-flush">
-                    {% for clients in results %}
+                    {% for clients in results.items %}
                         <li class="list-group-item ">
                             <div class="d-flex flex-row">
                                 <span class="col-1 ">{{ loop.index }}</span>
@@ -42,6 +42,43 @@
                        </li> 
                     {% endfor %}
                 </ul>
+                <nav class="d-flex justify-content-center mt-3">
+                    <ul class="pagination">
+                        {% if results.page > 1 %}
+                            <li class="page-item">
+                                <a class="page-link" href="{{ results.links.prev }}">
+                                    <span>&laquo;</span>
+                                </a>
+                            </li>
+                        {% else %}
+                            <li class="page-item disabled">
+                                <a class="page-link" href="{{ results.links.prev }}">
+                                    <span>&laquo;</span>
+                                </a>
+                            </li>
+                        {% endif %}
+                        {% for number in range(1,results.pages+1) %}
+                            {% if number == results.page %}
+                                <li class="page-item disabled"><a class="page-link" href="{{ url_for('read_all_client') }}?page={{ number }} &size={{ results.size }}">{{ number }}</a></li>
+                            {% else %}
+                                <li class="page-item"><a class="page-link" href="{{ url_for('read_all_client') }}?page={{ number }} &size={{ results.size }}">{{ number }}</a></li>
+                            {% endif %}    
+                        {% endfor %}
+                        {% if results.page < results.pages %}
+                            <li class="page-item">
+                                <a class="page-link" href="{{ results.links.next }}">
+                                    <span>&raquo;</span>
+                                </a>
+                            </li>
+                        {% else %}
+                            <li class="page-item disabled">
+                                <a class="page-link" href="{{ results.links.next }}">
+                                    <span>&raquo;</span>
+                                </a>
+                            </li>
+                        {% endif %}
+                    </ul>
+                </nav>
                 <!-- user modal --------------------------------------------------------------------------------------- -->
                 <div class="modal fade" id="user_modal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1">
                 <div class="modal-dialog">

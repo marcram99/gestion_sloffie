@@ -2,8 +2,12 @@ from fastapi import FastAPI, Request, Response, Depends
 from fastapi import HTTPException
 from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
-from fastapi_pagination import Page, add_pagination, paginate
+from fastapi_pagination import add_pagination
+from fastapi_pagination.links import Page
+from fastapi_pagination.ext.sqlalchemy import paginate
+
 from sqlalchemy.orm import Session
+from sqlalchemy import select
 
 from .database import SessionLocal, engine
 from . import models, schema, crud
@@ -34,15 +38,27 @@ async def home(request: Request):
                                        }
                                       )
 
+# -------------------------------------------------------------------------
+
+
+@app.get("/user")
+def get_users(request: Request, db: Session = Depends(get_db)) -> Page[schema.Client]:
+    users: [schema.Client] = db.query(models.Client).all()
+    return paginate(db, select(models.Client))
+# --------------------------------------------------------------------------
+
 
 @app.get("/clients")
-async def read_all_client(request: Request, db: Session = Depends(get_db)):
-    results = db.query(models.Client).all()
+async def read_all_client(request: Request,
+                          db: Session = Depends(get_db)
+                          ) -> Page[schema.Client]:
+    results = paginate(db, select(models.Client))
     total = db.query(models.Client).count()
     print(f'DEBUG: {total=}')
     return templates.TemplateResponse("client.html",
                                       {"request": request,
                                        "results": results,
+                                       "total": total
                                        }
                                       )
 
