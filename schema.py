@@ -23,9 +23,10 @@ class Cours(CoursBase):
 class FactureBase(BaseModel):
     timestamp: str
     produit: str
-    remise: str
+    remise: Optional[str] = None
     prix: str
-   
+    user_id: int
+
 
 class FactureCreate(BaseModel):
     pass
@@ -33,11 +34,10 @@ class FactureCreate(BaseModel):
 
 class Facture(BaseModel):
     id: int
-    client_id: int
 
     class Config:
         orm_mode = True
-   
+
 
 class ClientBase(BaseModel):
     nom: str
@@ -57,6 +57,7 @@ class ClientCreate(ClientBase):
 class Client(ClientBase):
     id: int
     agenda: List[Cours] = []
+    bill: List[Facture] = []
 
     class Config:
         orm_mode = True

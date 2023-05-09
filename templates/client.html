@@ -7,80 +7,80 @@
 {% block client %}
     <div class="container">
         <div class="card">
-                <div class="card-header bg-transparent">
-                    <div class="d-flex flex-row justify-content-between">
-                        <h4 class=" flex-grow  m-1 ">Clients</h4>
-                        <button id="add_client" class="btn " onclick="creeClient(this)"><i class="fa fa-plus-circle mt-n2" style="font-size:45px;color:green;"></i>
-                    </div>
+            <div class="card-header bg-transparent">
+                <div class="d-flex flex-row justify-content-between">
+                    <h4 class=" flex-grow  m-1 ">Clients</h4>
+                    <button id="add_client" class="btn " onclick="creeClient(this)"><i class="fa fa-plus-circle mt-n2" style="font-size:45px;color:green;"></i>
                 </div>
-                <div class="card-body d-flex flex-row fw-bolder">
-                    <span class="col-1 ">#</span>
-                    <span class="col  ">Nom</span>
-                    <span class="col d-none d-md-block ">Prénom</span>
-                    <span class="col d-none d-lg-block ">Adresse</span>
-                    <span class="col d-none d-lg-block ">Code postal</span>
-                    <span class="col d-none d-lg-block ">Mail</span>
-                    <span class="col d-none d-lg-block ">Téléphone</span>
-                    <span class="col ml-auto text-end ">Action</span>
-                </div>
-                <ul class="list-group list-group-flush">
-                    {% for clients in results.items %}
-                        <li class="list-group-item ">
-                            <div class="d-flex flex-row">
-                                <span class="col-1 ">{{ loop.index }}</span>
-                                <span class="col " id="nom_{{ clients.id }}">{{ clients.nom }}</span>
-                                <span class="col d-none d-md-block " id="prenom_{{ clients.id }}">{{ clients.prenom }}</span>
-                                <span class="col d-none d-lg-block " id="adresse_{{ clients.id }}">{{ clients.adresse }}</span>
-                                <span class="col d-none d-lg-block " id="code_{{ clients.id }}">{{ clients.code_postal }}</span>
-                                <span class="col d-none d-lg-block " id="mail_{{ clients.id }}">{{ clients.mail }}</span>
-                                <span class="col d-none d-lg-block " id="no_tel_{{ clients.id }}">{{ clients.no_tel }}</span>
-                                <span class="col ml-auto text-end ">
-                                    <button id="modif_{{ clients.id }}" class="btn" onclick="InformationClient(this)"><i class="fa fa-info-circle mt-n2" ></i>
-                                    <button id="modif_{{ clients.id }}" class="btn" onclick="InformationUser(this)"><i class="fa fa-envelope-o mt-n2" ></i>
-                                </span>
-                            </div>
-                       </li> 
+            </div>
+            <div class="card-body d-flex flex-row fw-bolder">
+                <span class="col-1 ">#</span>
+                <span class="col  ">Nom</span>
+                <span class="col d-none d-md-block ">Prénom</span>
+                <span class="col d-none d-lg-block ">Adresse</span>
+                <span class="col d-none d-lg-block ">Code postal</span>
+                <span class="col d-none d-lg-block ">Mail</span>
+                <span class="col d-none d-lg-block ">Téléphone</span>
+                <span class="col ml-auto text-end ">Action</span>
+            </div>
+            <ul class="list-group list-group-flush">
+                {% for clients in results.items %}
+                    <li class="list-group-item ">
+                        <div class="d-flex flex-row">
+                            <span class="col-1 ">{{ loop.index }}</span>
+                            <span class="col " id="nom_{{ clients.id }}">{{ clients.nom }}</span>
+                            <span class="col d-none d-md-block " id="prenom_{{ clients.id }}">{{ clients.prenom }}</span>
+                            <span class="col d-none d-lg-block " id="adresse_{{ clients.id }}">{{ clients.adresse }}</span>
+                            <span class="col d-none d-lg-block " id="code_{{ clients.id }}">{{ clients.code_postal }}</span>
+                            <span class="col d-none d-lg-block " id="mail_{{ clients.id }}">{{ clients.mail }}</span>
+                            <span class="col d-none d-lg-block " id="no_tel_{{ clients.id }}">{{ clients.no_tel }}</span>
+                            <span class="col ml-auto text-end ">
+                                <button id="modif_{{ clients.id }}" class="btn" onclick="InformationClient(this)"><i class="fa fa-info-circle mt-n2" ></i>
+                                <button id="modif_{{ clients.id }}" class="btn" onclick="infoFacture(this)"><i class="fa fa-file-text-o mt-n2" ></i>
+                            </span>
+                        </div>
+                   </li> 
+                {% endfor %}
+            </ul>
+            <nav class="d-flex justify-content-center mt-3">
+                <ul class="pagination">
+                    {% if results.page > 1 %}
+                        <li class="page-item">
+                            <a class="page-link" href="{{ results.links.prev }}">
+                                <span>&laquo;</span>
+                            </a>
+                        </li>
+                    {% else %}
+                        <li class="page-item disabled">
+                            <a class="page-link" href="{{ results.links.prev }}">
+                                <span>&laquo;</span>
+                            </a>
+                        </li>
+                    {% endif %}
+                    {% for number in range(1,results.pages+1) %}
+                        {% if number == results.page %}
+                            <li class="page-item disabled"><a class="page-link" href="{{ url_for('read_all_client') }}?page={{ number }} &size={{ results.size }}">{{ number }}</a></li>
+                        {% else %}
+                            <li class="page-item"><a class="page-link" href="{{ url_for('read_all_client') }}?page={{ number }} &size={{ results.size }}">{{ number }}</a></li>
+                        {% endif %}    
                     {% endfor %}
+                    {% if results.page < results.pages %}
+                        <li class="page-item">
+                            <a class="page-link" href="{{ results.links.next }}">
+                                <span>&raquo;</span>
+                            </a>
+                        </li>
+                    {% else %}
+                        <li class="page-item disabled">
+                            <a class="page-link" href="{{ results.links.next }}">
+                                <span>&raquo;</span>
+                            </a>
+                        </li>
+                    {% endif %}
                 </ul>
-                <nav class="d-flex justify-content-center mt-3">
-                    <ul class="pagination">
-                        {% if results.page > 1 %}
-                            <li class="page-item">
-                                <a class="page-link" href="{{ results.links.prev }}">
-                                    <span>&laquo;</span>
-                                </a>
-                            </li>
-                        {% else %}
-                            <li class="page-item disabled">
-                                <a class="page-link" href="{{ results.links.prev }}">
-                                    <span>&laquo;</span>
-                                </a>
-                            </li>
-                        {% endif %}
-                        {% for number in range(1,results.pages+1) %}
-                            {% if number == results.page %}
-                                <li class="page-item disabled"><a class="page-link" href="{{ url_for('read_all_client') }}?page={{ number }} &size={{ results.size }}">{{ number }}</a></li>
-                            {% else %}
-                                <li class="page-item"><a class="page-link" href="{{ url_for('read_all_client') }}?page={{ number }} &size={{ results.size }}">{{ number }}</a></li>
-                            {% endif %}    
-                        {% endfor %}
-                        {% if results.page < results.pages %}
-                            <li class="page-item">
-                                <a class="page-link" href="{{ results.links.next }}">
-                                    <span>&raquo;</span>
-                                </a>
-                            </li>
-                        {% else %}
-                            <li class="page-item disabled">
-                                <a class="page-link" href="{{ results.links.next }}">
-                                    <span>&raquo;</span>
-                                </a>
-                            </li>
-                        {% endif %}
-                    </ul>
-                </nav>
-                <!-- user modal --------------------------------------------------------------------------------------- -->
-                <div class="modal fade" id="user_modal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1">
+            </nav>
+            <!-- user modal --------------------------------------------------------------------------------------- -->
+            <div class="modal fade" id="user_modal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1">
                 <div class="modal-dialog">
                     <div class="modal-content">
                         <div class="modal-header">
@@ -88,73 +88,96 @@
                             <h5  id="userInfo_id" class="d-none">User_id</h5>
                             <div class="row d-flex justify-content-between">
                                 <div class="btn" onclick="changeLock(this)"><i id="lockIcon"class="fa fa-lock mt-n4" style="font-size:35px;color:lightgrey;"></i></div>
+                            </div>
+                        </div>
+                        <div class="modal-body">
+                            <form id="formEdit" class="d-none">
+                                <div class="mb-3 row"style="height:40px;">
+                                    <div class="col-3 text-end pt-2">Nom:</div>
+                                    <div class="col">
+                                        <input type="text" class="form-control text-start pt-2" id="nomMod" >
+                                    </div>
+                                </div>
+                                <div class="mb-3 row"style="height:40px;">
+                                    <div class="col-3 text-end pt-2">Prénom:</div>
+                                    <div class="col">
+                                        <input type="text" class="form-control" id="prenomMod" >
+                                    </div>
+                                </div>
+                                <div class="mb-3 row"style="height:40px;">
+                                    <div class="col-3 text-end pt-2">Adresse:</div>
+                                    <div class="col">
+                                        <input type="text" class="form-control" id="adresseMod" >
+                                    </div>
+                                </div>
+                                <div class="mb-3 row"style="height:40px;">
+                                    <div class="col-3 text-end pt-2">Code postal:</div>
+                                    <div class="col">
+                                        <input type="text" class="form-control" id="codeMod" >
+                                    </div>
+                                </div>
+                                <div class="mb-3 row"style="height:40px;">
+                                    <div class="col-3 text-end pt-2">Téléphone:</div>
+                                    <div class="col">
+                                        <input type="text" class="form-control" id="telMod" >
+                                    </div>
+                                </div>
+                                <div class="row justify-content-center"style="height:40px;">
+                                    <div class="col-3 text-end align-middle pt-2">Mail:</div>
+                                    <div class="col">
+                                        <input type="text" class="form-control" id="mailMod">
+                                    </div>
+                                </div>
+                            </form>
+                            <div  id="formAff"class="d-block" >
+                                <div class="mb-3 row" style="height:40px;">
+                                    <div class="col-3 text-end align-middle pt-2">Nom:</div>
+                                    <div class="col pt-2 ml-3" id="clientNomAff"></div>
+                                </div>
+                                <div class="mb-3 row "style="height:40px;">
+                                    <div class="col-3 text-end align-middle pt-2">Prénom:</div>
+                                    <div class="col pt-2 ml-3" id="clientPrenomAff"></div>
+                                </div>
+                                <div class="mb-3 row "style="height:40px;">
+                                    <div class="col-3 text-end align-middle pt-2">Adresse:</div>
+                                    <div class="col pt-2 ml-3" id="clientAdresseAff"></div>
+                                </div>
+                                <div class="mb-3 row "style="height:40px;">
+                                    <div class="col-3 text-end align-middle pt-2">Code postal:</div>
+                                    <div class="col pt-2 ml-3" id="clientCodeAff"></div>
+                                </div>
+                                <div class="mb-3 row"style="height:40px;">
+                                    <div class="col-3 text-end align-middle pt-2">Téléphone:</div>
+                                    <div class="col pt-2 ml-3" id="clientTelAff"></div>
+                                </div>
+                                <div class="mb-3 row"style="height:40px;">
+                                   <div class="col-3 text-end align-middle pt-2">Mail:</div>
+                                   <div class="col pt-2 ml-3" id="clientMailAff"></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button"id="validUser" class="btn btn-success d-none" onclick="validUserform(this)"><i class="fa fa-lg fa-pencil m-2" ></i>Modify</button>
+                            <button type="button"id="deleteUser" class="btn btn-danger d-none" onclick="effaceClient(this)"><i class="fa fa-lg fa-trash-o m-2 ml-1" ></i>Delete</button>
+                            <button type="button"id="createUser" class="btn btn-success d-none" onclick="validUserform(this)"><i class="fa fa-lg fa-pencil m-2 ml-1" ></i>Create</button>
+                            <button type="button" class="btn btn-secondary" onclick="closeModal()"><i class="fa fa-lg fa-close m-2 ml-1" ></i>Cancel</button>
+                        </div>
+                    </div> 
+                </div>
+            </div>
+            <!-- facture modal --------------------------------------------------------------------------------------- -->
+            <div class="modal fade" id="facture_modal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="modal_title">Factures</h5>
+                            <h5  id="factInfo_id" class="d-none">User_id</h5>
+                            <div class="row d-flex justify-content-between">
+                                <div class="btn" onclick="changeLock(this)"><i id="lockIcon"class="fa fa-lock mt-n4" style="font-size:35px;color:lightgrey;"></i></div>
                         </div>
                     </div>
                     <div class="modal-body">
-                        <form id="formEdit" class="d-none">
-                            <div class="mb-3 row"style="height:40px;">
-                                <div class="col-3 text-end pt-2">Nom:</div>
-                                <div class="col">
-                                    <input type="text" class="form-control text-start pt-2" id="nomMod" >
-                                </div>
-                            </div>
-                            <div class="mb-3 row"style="height:40px;">
-                                <div class="col-3 text-end pt-2">Prénom:</div>
-                                <div class="col">
-                                    <input type="text" class="form-control" id="prenomMod" >
-                                </div>
-                            </div>
-                            <div class="mb-3 row"style="height:40px;">
-                                <div class="col-3 text-end pt-2">Adresse:</div>
-                                <div class="col">
-                                    <input type="text" class="form-control" id="adresseMod" >
-                                </div>
-                            </div>
-                            <div class="mb-3 row"style="height:40px;">
-                                <div class="col-3 text-end pt-2">Code postal:</div>
-                                <div class="col">
-                                    <input type="text" class="form-control" id="codeMod" >
-                                </div>
-                            </div>
-                            <div class="mb-3 row"style="height:40px;">
-                                <div class="col-3 text-end pt-2">Téléphone:</div>
-                                <div class="col">
-                                    <input type="text" class="form-control" id="telMod" >
-                                </div>
-                            </div>
-                            <div class="row justify-content-center"style="height:40px;">
-                                <div class="col-3 text-end align-middle pt-2">Mail:</div>
-                                <div class="col">
-                                    <input type="text" class="form-control" id="mailMod">
-                                </div>
-                            </div>
-                        </form>
-                        <div  id="formAff"class="d-block" >
-                            <div class="mb-3 row" style="height:40px;">
-                                <div class="col-3 text-end align-middle pt-2">Nom:</div>
-                                <div class="col pt-2 ml-3" id="clientNomAff"></div>
-                            </div>
-                            <div class="mb-3 row "style="height:40px;">
-                                <div class="col-3 text-end align-middle pt-2">Prénom:</div>
-                                <div class="col pt-2 ml-3" id="clientPrenomAff"></div>
-                            </div>
-                            <div class="mb-3 row "style="height:40px;">
-                                <div class="col-3 text-end align-middle pt-2">Adresse:</div>
-                                <div class="col pt-2 ml-3" id="clientAdresseAff"></div>
-                            </div>
-                            <div class="mb-3 row "style="height:40px;">
-                                <div class="col-3 text-end align-middle pt-2">Code postal:</div>
-                                <div class="col pt-2 ml-3" id="clientCodeAff"></div>
-                            </div>
-                            <div class="mb-3 row"style="height:40px;">
-                                <div class="col-3 text-end align-middle pt-2">Téléphone:</div>
-                                <div class="col pt-2 ml-3" id="clientTelAff"></div>
-                            </div>
-                            <div class="mb-3 row"style="height:40px;">
-                               <div class="col-3 text-end align-middle pt-2">Mail:</div>
-                               <div class="col pt-2 ml-3" id="clientMailAff"></div>
-                            </div>
-                        </div>
+                        <h5>Hello les factures</h5>
                     </div>
                     <div class="modal-footer">
                         <button type="button"id="validUser" class="btn btn-success d-none" onclick="validUserform(this)"><i class="fa fa-lg fa-pencil m-2" ></i>Modify</button>
@@ -162,8 +185,9 @@
                         <button type="button"id="createUser" class="btn btn-success d-none" onclick="validUserform(this)"><i class="fa fa-lg fa-pencil m-2 ml-1" ></i>Create</button>
                         <button type="button" class="btn btn-secondary" onclick="closeModal()"><i class="fa fa-lg fa-close m-2 ml-1" ></i>Cancel</button>
                     </div>
-                </div> 
+                </div>
             </div>
+            <!-- end modal facture ----------------------------------------- -->
         </div>
     </div>
     <script src="{{ url_for('static', path='scripts/client.js') }}"></script>

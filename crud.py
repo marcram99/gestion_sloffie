@@ -44,3 +44,16 @@ def delete_client(db: Session, client_id: int):
     db.delete(rec)
     db.commit()
     return {"action": "user_deleted"}
+
+
+def create_facture(db: Session, facture: schema.FactureCreate):
+    print(f'DEBUG:crud-create_client: {facture=}')
+    db_facture = models.Facture(timestamp=facture.timestamp,
+                                produit=facture.produit,
+                                prix=facture.prix,
+                                user_id=facture.user_id
+                                )
+    db.add(db_facture)
+    db.commit()
+    db.refresh(db_facture)
+    return db_facture

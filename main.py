@@ -5,6 +5,7 @@ from fastapi.templating import Jinja2Templates
 from fastapi_pagination import add_pagination
 from fastapi_pagination.links import Page
 from fastapi_pagination.ext.sqlalchemy import paginate
+from datetime import datetime
 
 from sqlalchemy.orm import Session
 from sqlalchemy import select
@@ -38,21 +39,12 @@ async def home(request: Request):
                                        }
                                       )
 
-# -------------------------------------------------------------------------
-
-
-@app.get("/user")
-def get_users(request: Request, db: Session = Depends(get_db)) -> Page[schema.Client]:
-    users: [schema.Client] = db.query(models.Client).all()
-    return paginate(db, select(models.Client))
-# --------------------------------------------------------------------------
-
 
 @app.get("/clients")
 async def read_all_client(request: Request,
                           db: Session = Depends(get_db)
                           ) -> Page[schema.Client]:
-    results = paginate(db, select(models.Client))
+    results = paginate(db, select(models.Client).order_by(models.Client.nom))
     total = db.query(models.Client).count()
     print(f'DEBUG: {total=}')
     return templates.TemplateResponse("client.html",
@@ -88,3 +80,32 @@ def delete_user(client_id: int, db: Session = Depends(get_db)):
     else:
         result = crud.delete_client(db, client_id)
     return result
+
+
+@app.get("/factures")
+async def facture(request: Request,
+                  db: Session = Depends(get_db)
+                  ) -> Page[schema.Facture]:
+    results = paginate(db, select(models.Facture))
+    return templates.TemplateResponse("facture.html",
+                                      {"request": request,
+                                       "results": results
+                                       }
+                                      )
+
+
+@app.post("/factures/{client_id}")
+async def new_facture(client_id: int,
+                      db: Session = Depends(get_db)
+                      ) -> Page:
+    client = crud.get_client_by_id(db, client_id)
+    print(f'new facture for no: {client.prenom} {client.nom}')
+    facture = schema.FactureCreate
+    facture.timestamp = "today"
+    facture.produit = "Forfait 10 cours"
+    facture.prix = "100 CHF"
+    facture.user_id = client_id
+    bill = crud.create_facture(db, facture=facture)
+                                  
+    return bill
+

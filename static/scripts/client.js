@@ -38,6 +38,26 @@ function changeLock(){
     }
 }
 
+function nouvelleFacture(id){
+    event.preventDefault()
+    var client_id = (id.id).split("_")[1]
+    fetch("/factures/" + client_id,{
+        method:"POST", 
+        headers: {"Content-Type" : "application/json"},
+        mode: 'cors',
+        body: JSON.stringify(client_id)},
+        function(result){
+            console.log(result)
+        }
+    )
+}
+
+function infoFacture(){
+    event.preventDefault()
+    console.log('modal facture')
+    $('#facture_modal').modal('show')
+}
+
 function InformationClient(id){
     event.preventDefault()
     var client_id = (id.id).split("_")[1]
