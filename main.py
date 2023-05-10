@@ -50,9 +50,20 @@ async def read_all_client(request: Request,
     return templates.TemplateResponse("client.html",
                                       {"request": request,
                                        "results": results,
-                                       "total": total
-                                       }
-                                      )
+                                       "total": total})
+
+
+@app.post("/client/{client_id}")
+async def info_user(client_id: int,
+                    db: Session = Depends(get_db)
+                    ) -> schema.Client:
+    print(f'DEBUG: {client_id=} ')
+    #db_rqst = crud.get_client_by_id(db, client_id)
+    #result = {"nom": db_rqst.nom, "prenom": db_rqst.prenom}
+    result = crud.get_client_by_id(db, client_id)
+    print(f'DEBUG_found: {result} ')
+    print(f'DEBUG_found: {type(result)=} ')
+    return result
 
 
 @app.post("/client")
@@ -108,6 +119,4 @@ async def new_facture(client_id: int,
     facture.prix = "100 CHF"
     facture.user_id = client_id
     bill = crud.create_facture(db, facture=facture)
-                                  
     return bill
-

@@ -36,7 +36,14 @@
                             <span class="col d-none d-lg-block " id="no_tel_{{ clients.id }}">{{ clients.no_tel }}</span>
                             <span class="col ml-auto text-end ">
                                 <button id="modif_{{ clients.id }}" class="btn" onclick="InformationClient(this)"><i class="fa fa-info-circle mt-n2" ></i>
-                                <button id="modif_{{ clients.id }}" class="btn" onclick="infoFacture(this)"><i class="fa fa-file-text-o mt-n2" ></i>
+                                <button id="factureInfo_{{ clients.id }}" class="btn" onclick="infoFacture(this)">
+                                    {% if clients.bill|length > 1 %}
+                                    <i class="fa fa-file-text-o mt-n2"style="color:green" >
+                                   <span class="position-absolute top-50 start-100 translate-middle badge rounded-pill bg-success">2 
+                                    </i>
+                                    {% else %}
+                                    <i class="fa fa-file-text-o mt-n2"style="color:black" ></i>
+                                    {% endif %}
                             </span>
                         </div>
                    </li> 
@@ -170,14 +177,18 @@
                 <div class="modal-dialog">
                     <div class="modal-content">
                         <div class="modal-header">
-                            <h5 class="modal-title" id="modal_title">Factures</h5>
+                            <h5 class="modal-title" id="modal_title">Factures de <span id="facture_id"> Mister</span></h5>
                             <h5  id="factInfo_id" class="d-none">User_id</h5>
                             <div class="row d-flex justify-content-between">
                                 <div class="btn" onclick="changeLock(this)"><i id="lockIcon"class="fa fa-lock mt-n4" style="font-size:35px;color:lightgrey;"></i></div>
                         </div>
                     </div>
                     <div class="modal-body">
-                        <h5>Hello les factures</h5>
+                        {% for clients in results %}
+                            {% for facture in clients.bill %}
+                            <span>{{ facture.prix }}
+                                {% endfor %}
+                                {% endfor %}
                     </div>
                     <div class="modal-footer">
                         <button type="button"id="validUser" class="btn btn-success d-none" onclick="validUserform(this)"><i class="fa fa-lg fa-pencil m-2" ></i>Modify</button>

@@ -52,10 +52,26 @@ function nouvelleFacture(id){
     )
 }
 
-function infoFacture(){
+function infoFacture(id){
     event.preventDefault()
+    var client_id = (id.id).split("_")[1]
     console.log('modal facture')
     $('#facture_modal').modal('show')
+    document.getElementById("facture_id").innerHTML = client_id
+    url = "/client/" + client_id
+    fetch(url,{
+        method:"POST", 
+        headers: {"Content-Type" : "application/json"},
+        mode: 'cors',
+        }
+    )
+    .then((resp) => resp.json())
+    .then(function(data) {
+        document.getElementById("facture_id").innerHTML = data.prenom + " " + data.nom
+        console.log('factures :')
+        console.log(data.bill)
+    })
+    
 }
 
 function InformationClient(id){
