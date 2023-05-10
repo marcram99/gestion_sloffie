@@ -87,9 +87,11 @@ async def facture(request: Request,
                   db: Session = Depends(get_db)
                   ) -> Page[schema.Facture]:
     results = paginate(db, select(models.Facture))
+    clients = db.query(models.Client).all()
     return templates.TemplateResponse("facture.html",
                                       {"request": request,
-                                       "results": results
+                                       "results": results,
+                                       "clients": clients
                                        }
                                       )
 

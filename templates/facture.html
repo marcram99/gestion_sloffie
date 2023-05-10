@@ -25,12 +25,18 @@
                         <li class="list-group-item ">
                             <div class="d-flex flex-row">
                                 <span class="col-1 ">{{ loop.index }}</span>
+                                <span class="col " >{{ fact.timestamp }}</span>
                                 <span class="col " >{{ fact.user_id }}</span>
                                 <span class="col " >{{ fact.prix }}</span>
                             </div>
                        </li> 
                     {% endfor %}
                 </ul>
+                
+                    <h1>{{ clients[1].id }} {{  clients[1].nom }}</h1>
+                    {% for elem in clients %}
+                    <h1>{{ elem.id }} {{ elem.nom }}</h1>
+                    {% endfor %}
             </div>
         </div>
     </div>

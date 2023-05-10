@@ -32,7 +32,7 @@ class FactureCreate(BaseModel):
     pass
 
 
-class Facture(BaseModel):
+class Facture(FactureBase):
     id: int
 
     class Config:
