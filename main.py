@@ -110,11 +110,11 @@ async def facture(request: Request,
 @app.post("/factures/{client_id}")
 async def new_facture(client_id: int,
                       db: Session = Depends(get_db)
-                      ) -> Page:
+                      ):
     client = crud.get_client_by_id(db, client_id)
     print(f'new facture for no: {client.prenom} {client.nom}')
     facture = schema.FactureCreate
-    facture.timestamp = "today"
+    facture.timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
     facture.produit = "Forfait 10 cours"
     facture.prix = "100 CHF"
     facture.user_id = client_id

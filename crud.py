@@ -47,7 +47,7 @@ def delete_client(db: Session, client_id: int):
 
 
 def create_facture(db: Session, facture: schema.FactureCreate):
-    print(f'DEBUG:crud-create_client: {facture=}')
+    print(f'DEBUG:crud-create_facture: {facture=}')
     db_facture = models.Facture(timestamp=facture.timestamp,
                                 produit=facture.produit,
                                 prix=facture.prix,

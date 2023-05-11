@@ -21,7 +21,8 @@
                 <span class="col d-none d-lg-block ">Code postal</span>
                 <span class="col d-none d-lg-block ">Mail</span>
                 <span class="col d-none d-lg-block ">Téléphone</span>
-                <span class="col ml-auto text-end ">Action</span>
+                <span class="col ml-auto">Action</span>
+                <span class="col-1 text-end">#</span>
             </div>
             <ul class="list-group list-group-flush">
                 {% for clients in results.items %}
@@ -34,15 +35,18 @@
                             <span class="col d-none d-lg-block " id="code_{{ clients.id }}">{{ clients.code_postal }}</span>
                             <span class="col d-none d-lg-block " id="mail_{{ clients.id }}">{{ clients.mail }}</span>
                             <span class="col d-none d-lg-block " id="no_tel_{{ clients.id }}">{{ clients.no_tel }}</span>
-                            <span class="col ml-auto text-end ">
+                            <span class="col-1 ">
                                 <button id="modif_{{ clients.id }}" class="btn" onclick="InformationClient(this)"><i class="fa fa-info-circle mt-n2" ></i>
-                                <button id="factureInfo_{{ clients.id }}" class="btn" onclick="infoFacture(this)">
-                                    {% if clients.bill|length > 1 %}
-                                    <i class="fa fa-file-text-o mt-n2"style="color:green" >
-                                   <span class="position-absolute top-50 start-100 translate-middle badge rounded-pill bg-success">2 
-                                    </i>
+                            </span>
+                            <span class="col ml-auto text-end">
+                                <button id="factureInfo_{{ clients.id }}" class="btn" onclick="nouvelleFacture(this)">
+                                    {% if clients.bill|length >= 1 %}
+                                        <i class="fa fa-file-text-o mt-n2"style="color:green" >
+                                            <span class="badge rounded-pill bg-success">
+                                            {{ clients.bill|length }} 
+                                        </i>
                                     {% else %}
-                                    <i class="fa fa-file-text-o mt-n2"style="color:black" ></i>
+                                        <i class="fa fa-file-text-o mt-n2"style="color:black" ></i>
                                     {% endif %}
                             </span>
                         </div>

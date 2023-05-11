@@ -45,11 +45,9 @@ function nouvelleFacture(id){
         method:"POST", 
         headers: {"Content-Type" : "application/json"},
         mode: 'cors',
-        body: JSON.stringify(client_id)},
-        function(result){
-            console.log(result)
-        }
+        body: JSON.stringify(client_id)}
     )
+    .then(window.location.reload())
 }
 
 function infoFacture(id){
