@@ -5,6 +5,20 @@ function closeModal(){
     window.location.reload()
 }
 
+function recup_client_info(id){
+    url = "/client/" + id
+    fetch(url,{
+        method:"POST", 
+        headers: {"Content-Type" : "application/json"},
+        mode: 'cors',
+        }
+    )
+    .then((resp) => resp.json())
+    .then(function(data) {
+        return data
+    })
+}
+
 function creeClient(){
     event.preventDefault()
     $('#user_modal').modal('show')
@@ -76,6 +90,12 @@ function InformationClient(id){
     event.preventDefault()
     var client_id = (id.id).split("_")[1]
     console.log('you click on user : ' + client_id)
+    var data = recup_client_info(client_id)
+    console.log('infos from db')
+    console.log('nom :' + data.nom)
+    console.log('prenom :' + data.prenom)
+    console.log('mail :' + data.mail)
+
     var nom = document.getElementById("nom_" + client_id).innerHTML
     var prenom = document.getElementById("prenom_" + client_id).innerHTML
     var adresse = document.getElementById("adresse_" + client_id).innerHTML
