@@ -45,12 +45,18 @@ async def read_all_client(request: Request,
                           db: Session = Depends(get_db)
                           ) -> Page[schema.Client]:
     results = paginate(db, select(models.Client).order_by(models.Client.nom))
-    total = db.query(models.Client).count()
-    print(f'DEBUG: {total=}')
     return templates.TemplateResponse("client.html",
                                       {"request": request,
                                        "results": results,
-                                       "total": total})
+                                       })
+
+
+@app.post("/client")
+async def create_user(client: schema.ClientCreate,
+                      db: Session = Depends(get_db)
+                      ):
+    print(f'DEBUG:POST {client.nom=} {client.prenom=} ')
+    return crud.create_client(db=db, client=client)
 
 
 @app.post("/client/{client_id}")
@@ -66,14 +72,6 @@ async def info_user(client_id: int,
     return result
 
 
-@app.post("/client")
-async def create_user(client: schema.ClientCreate,
-                      db: Session = Depends(get_db)
-                      ):
-    print(f'DEBUG:POST {client.nom=} {client.prenom=} ')
-    return crud.create_client(db=db, client=client)
-
-
 @app.put("/client/{client_id}")
 async def update_user(client_id: int,
                       client: schema.ClientCreate,
@@ -84,8 +82,9 @@ async def update_user(client_id: int,
 
 
 @app.delete("/client/{client_id}")
-def delete_user(client_id: int, db: Session = Depends(get_db)):
-    db_client = crud.get_client_by_id(db, client_id=client_id)
+async def delete_user(client_id: int,
+                db: Session = Depends(get_db)):
+    db_client = crud.get_client_by_id(db, client_id)
     if db_client is None:
         raise HTTPException(status_code=404, detail="User not found")
     else:
@@ -94,15 +93,13 @@ def delete_user(client_id: int, db: Session = Depends(get_db)):
 
 
 @app.get("/factures")
-async def facture(request: Request,
-                  db: Session = Depends(get_db)
-                  ) -> Page[schema.Facture]:
-    results = paginate(db, select(models.Facture))
-    clients = db.query(models.Client).all()
+async def read_all_facture(request: Request,
+                           db: Session = Depends(get_db)
+                           ) -> Page[schema.Facture]:
+    resultat = paginate(db, select(models.Facture).order_by(models.Facture.timestamp))
     return templates.TemplateResponse("facture.html",
                                       {"request": request,
-                                       "results": results,
-                                       "clients": clients
+                                       "results": resultat,
                                        }
                                       )
 

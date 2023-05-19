@@ -32,11 +32,43 @@
                        </li> 
                     {% endfor %}
                 </ul>
-                
-                    <h1>{{ clients[7].id }} {{  clients[7].nom }}</h1>
-                    {% for elem in clients %}
-                    <span>{{ elem.id }} {{ elem.nom }}</span>
-                    {% endfor %}
+                <nav class="d-flex justify-content-center mt-3">
+                    <ul class="pagination">
+                        {% if results.page > 1 %}
+                            <li class="page-item">
+                                <a class="page-link" href="{{ results.links.prev }}">
+                                    <span>&laquo;</span>
+                                </a>
+                            </li>
+                        {% else %}
+                            <li class="page-item disabled">
+                                <a class="page-link" href="{{ results.links.prev }}">
+                                    <span>&laquo;</span>
+                                </a>
+                            </li>
+                        {% endif %}
+                        {% for number in range(1,results.pages+1) %}
+                            {% if number == results.page %}
+                                <li class="page-item disabled"><a class="page-link" href="{{ url_for('read_all_facture') }}?page={{ number }} &size={{ results.size }}">{{ number }}</a></li>
+                            {% else %}
+                                <li class="page-item"><a class="page-link" href="{{ url_for('read_all_facture') }}?page={{ number }} &size={{ results.size }}">{{ number }}</a></li>
+                            {% endif %}    
+                        {% endfor %}
+                        {% if results.page < results.pages %}
+                            <li class="page-item">
+                                <a class="page-link" href="{{ results.links.next }}">
+                                    <span>&raquo;</span>
+                                </a>
+                            </li>
+                        {% else %}
+                            <li class="page-item disabled">
+                                <a class="page-link" href="{{ results.links.next }}">
+                                    <span>&raquo;</span>
+                                </a>
+                            </li>
+                        {% endif %}
+                    </ul>
+                </nav>
             </div>
         </div>
     </div>

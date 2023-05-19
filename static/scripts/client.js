@@ -5,21 +5,6 @@ function closeModal(){
     window.location.reload()
 }
 
-
-function creeClient(){
-    event.preventDefault()
-    $('#user_modal').modal('show')
-    document.getElementById("modal_title").innerHTML = "Nouveau Client"
-    document.getElementById("lockIcon").className = "d-none"
-    document.getElementById("formAff").className = "d-none"
-    document.getElementById("formEdit").className = "d-block"
-    document.getElementById("createUser").className = "btn btn-success d-block"
-    document.getElementById("clientNomAff").value = ""
-    document.getElementById("clientPrenomAff").value = ""
-    document.getElementById("clientTelAff").value = ""
-    document.getElementById("clientMailAff").value = ""
-}
-
 function changeLock(){
     var icone = document.getElementById('lockIcon').className
     if(icone == "fa fa-unlock-alt mt-n4"){
@@ -39,24 +24,10 @@ function changeLock(){
     }
 }
 
-function nouvelleFacture(id){
+function InformationClient(id){
     event.preventDefault()
     var client_id = (id.id).split("_")[1]
-    fetch("/factures/" + client_id,{
-        method:"POST", 
-        headers: {"Content-Type" : "application/json"},
-        mode: 'cors',
-        body: JSON.stringify(client_id)}
-    )
-    .then(window.location.reload())
-}
-
-function infoFacture(id){
-    event.preventDefault()
-    var client_id = (id.id).split("_")[1]
-    console.log('modal facture')
-    $('#facture_modal').modal('show')
-    document.getElementById("facture_id").innerHTML = client_id
+    console.log('you click on user : ' + client_id)
     url = "/client/" + client_id
     fetch(url,{
         method:"POST", 
@@ -66,14 +37,25 @@ function infoFacture(id){
     )
     .then((resp) => resp.json())
     .then(function(data) {
-        document.getElementById("facture_id").innerHTML = data.prenom + " " + data.nom
-        console.log('factures :')
-        console.log(data.bill)
+    document.getElementById("clientNomAff").innerHTML = data.nom
+    document.getElementById("nomMod").value = data.nom
+    document.getElementById("clientPrenomAff").innerHTML = data.prenom
+    document.getElementById("prenomMod").value = data.prenom
+    document.getElementById("clientAdresseAff").innerHTML = data.adresse
+    document.getElementById("adresseMod").value = data.adresse
+    document.getElementById("clientCodeAff").innerHTML = data.code_postal
+    document.getElementById("codeMod").value = data.code_postal
+    document.getElementById("clientMailAff").innerHTML = data.mail
+    document.getElementById("mailMod").value = data.mail
+    document.getElementById("clientTelAff").innerHTML = data.no_tel
+    document.getElementById("telMod").value = data.no_tel
     })
-    
+    $('#user_modal').modal('show')
+    document.getElementById("modal_title").innerHTML = "Information User"
+    document.getElementById("userInfo_id").innerHTML = client_id
 }
-
-function recup_client_info(id){
+/*function recup_client_info(id){
+    console.log('fetch id : ' + id)
     url = "/client/" + id
     fetch(url,{
         method:"POST", 
@@ -86,41 +68,20 @@ function recup_client_info(id){
         console.log('from recup: ' + data.nom)
         return data
     })
-    .then(function(data){
-    console.log('from recup2: ' + data.nom)
-    return data
-    })
-}
+}*/
 
-function InformationClient(id){
+function creeClient(){
     event.preventDefault()
-    var client_id = (id.id).split("_")[1]
-    console.log('you click on user : ' + client_id)
-    var data = new Promise (recup_client_info(client_id))
-  console.log('retour de recup2: ' + data.nom)
-
-    console.log('infos from db')
-    var nom = document.getElementById("nom_" + client_id).innerHTML
-    var prenom = document.getElementById("prenom_" + client_id).innerHTML
-    var adresse = document.getElementById("adresse_" + client_id).innerHTML
-    var code = document.getElementById("code_" + client_id).innerHTML
-    var mail = document.getElementById("mail_" + client_id).innerHTML
-    var tel = document.getElementById("no_tel_" + client_id).innerHTML
     $('#user_modal').modal('show')
-    document.getElementById("modal_title").innerHTML = "Information User"
-    document.getElementById("userInfo_id").innerHTML = client_id
-    document.getElementById("clientNomAff").innerHTML = nom
-    document.getElementById("nomMod").value = nom
-    document.getElementById("clientPrenomAff").innerHTML = prenom
-    document.getElementById("prenomMod").value = prenom
-    document.getElementById("clientAdresseAff").innerHTML = adresse
-    document.getElementById("adresseMod").value = adresse
-    document.getElementById("clientCodeAff").innerHTML = code
-    document.getElementById("codeMod").value = code
-    document.getElementById("clientMailAff").innerHTML = mail
-    document.getElementById("mailMod").value = mail
-    document.getElementById("clientTelAff").innerHTML = tel
-    document.getElementById("telMod").value = tel
+    document.getElementById("modal_title").innerHTML = "Nouveau Client"
+    document.getElementById("lockIcon").className = "d-none"
+    document.getElementById("formAff").className = "d-none"
+    document.getElementById("formEdit").className = "d-block"
+    document.getElementById("createUser").className = "btn btn-success d-block"
+    document.getElementById("clientNomAff").value = ""
+    document.getElementById("clientPrenomAff").value = ""
+    document.getElementById("clientTelAff").value = ""
+    document.getElementById("clientMailAff").value = ""
 }
 
 function effaceClient(){
@@ -133,7 +94,7 @@ function effaceClient(){
     closeModal()
 }
 
-function creeUser(id){
+/*function creeUser(id){
     event.preventDefault()
     $('#user_modal').modal('show')
     document.getElementById("modal_title").innerHTML = "New User"
@@ -145,7 +106,7 @@ function creeUser(id){
     document.getElementById("emailMod").value = ""
     document.getElementById("roleMod").value = ""
     document.getElementById("passwordMod").value = ""
-}
+}*/
 
 function validUserform(id){
     var nom = document.getElementById("nomMod").value
@@ -194,4 +155,38 @@ function sendUserData(data, method, id){
             console.log(result)
         }
     )
+}
+
+function nouvelleFacture(id){
+    event.preventDefault()
+    var client_id = (id.id).split("_")[1]
+    fetch("/factures/" + client_id,{
+        method:"POST", 
+        headers: {"Content-Type" : "application/json"},
+        mode: 'cors',
+        body: JSON.stringify(client_id)}
+    )
+    .then(window.location.reload())
+}
+
+function infoFacture(id){
+    event.preventDefault()
+    var client_id = (id.id).split("_")[1]
+    console.log('modal facture')
+    $('#facture_modal').modal('show')
+    document.getElementById("facture_id").innerHTML = client_id
+    url = "/client/" + client_id
+    fetch(url,{
+        method:"POST", 
+        headers: {"Content-Type" : "application/json"},
+        mode: 'cors',
+        }
+    )
+    .then((resp) => resp.json())
+    .then(function(data) {
+        document.getElementById("facture_id").innerHTML = data.prenom + " " + data.nom
+        console.log('factures :')
+        console.log(data.bill)
+    })
+    
 }
