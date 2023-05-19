@@ -5,19 +5,6 @@ function closeModal(){
     window.location.reload()
 }
 
-function recup_client_info(id){
-    url = "/client/" + id
-    fetch(url,{
-        method:"POST", 
-        headers: {"Content-Type" : "application/json"},
-        mode: 'cors',
-        }
-    )
-    .then((resp) => resp.json())
-    .then(function(data) {
-        return data
-    })
-}
 
 function creeClient(){
     event.preventDefault()
@@ -86,16 +73,33 @@ function infoFacture(id){
     
 }
 
+function recup_client_info(id){
+    url = "/client/" + id
+    fetch(url,{
+        method:"POST", 
+        headers: {"Content-Type" : "application/json"},
+        mode: 'cors',
+        }
+    )
+    .then((resp) => resp.json())
+    .then(function(data) {
+        console.log('from recup: ' + data.nom)
+        return data
+    })
+    .then(function(data){
+    console.log('from recup2: ' + data.nom)
+    return data
+    })
+}
+
 function InformationClient(id){
     event.preventDefault()
     var client_id = (id.id).split("_")[1]
     console.log('you click on user : ' + client_id)
-    var data = recup_client_info(client_id)
-    console.log('infos from db')
-    console.log('nom :' + data.nom)
-    console.log('prenom :' + data.prenom)
-    console.log('mail :' + data.mail)
+    var data = new Promise (recup_client_info(client_id))
+  console.log('retour de recup2: ' + data.nom)
 
+    console.log('infos from db')
     var nom = document.getElementById("nom_" + client_id).innerHTML
     var prenom = document.getElementById("prenom_" + client_id).innerHTML
     var adresse = document.getElementById("adresse_" + client_id).innerHTML
