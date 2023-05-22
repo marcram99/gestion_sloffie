@@ -18,7 +18,7 @@
             {% block navbar %}
                 <nav class="navbar navbar-expand-lg navbar-dark m-3 rounded-3"style="background-color: #000000;">
                     <div class="container-fluid">
-                        <a class="navbar-brand" href="{{ url_for('home') }}"><img src="{{ url_for('static', path='images/Logo02.png') }}" style="width:60px;"></a>
+                        <a class="navbar-brand" href="{{ url_for('home') }}"><img src="{{ url_for('static', path='images/Logo02.png') }}" style="width:40px;"></a>
                         <button class="navbar-toggler d-none" type="button" data-bs-toggle="collapse" data-bs-target="#navbarToggler">
                             <span class="navbar-toggler-icon"></span>
                         </button>
@@ -72,7 +72,7 @@
                                     </div>
                                 {% else %}
                                     <div class="position-absolute top-0 end-0 ">
-                                        <button type="button" class="btn btn-success d-flex align-item-bottom m-4 text-white" data-bs-toggle="modal" data-bs-target="#loginModal">
+                                        <button type="button" class="btn btn-success d-flex align-item-bottom m-4 text-white" data-bs-toggle="modal" data-bs-target="#loginModal" disabled>
                                               Connect
                                         </button>           
                                     </div>

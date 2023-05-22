@@ -64,8 +64,6 @@ async def info_user(client_id: int,
                     db: Session = Depends(get_db)
                     ) -> schema.Client:
     print(f'DEBUG: {client_id=} ')
-    #db_rqst = crud.get_client_by_id(db, client_id)
-    #result = {"nom": db_rqst.nom, "prenom": db_rqst.prenom}
     result = crud.get_client_by_id(db, client_id)
     print(f'DEBUG_found: {result} ')
     print(f'DEBUG_found: {type(result)=} ')
@@ -97,6 +95,21 @@ async def read_all_facture(request: Request,
                            db: Session = Depends(get_db)
                            ) -> Page[schema.Facture]:
     resultat = paginate(db, select(models.Facture).order_by(models.Facture.timestamp))
+    print(f'DEBUG-FACTURE_{resultat}')
+    return templates.TemplateResponse("facture.html",
+                                      {"request": request,
+                                       "results": resultat,
+                                       }
+                                      )
+
+
+@app.get("/factures/{client_id}")
+async def read_client_facture(client_id: int,
+                              request: Request,
+                              db: Session = Depends(get_db)
+                              ) -> Page[schema.Facture]:
+    resultat = paginate(db, select(models.Facture).filter(models.Facture.user_id == client_id).order_by(models.Facture.timestamp))
+    print(f'DEBUG-FACTURE_{resultat}')
     return templates.TemplateResponse("facture.html",
                                       {"request": request,
                                        "results": resultat,

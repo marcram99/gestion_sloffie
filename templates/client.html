@@ -15,36 +15,35 @@
             </div>
             <div class="card-body d-flex flex-row fw-bolder">
                 <span class="col-1 ">#</span>
-                <span class="col-2 ">Nom</span>
-                <span class="col-2 ">Prénom</span>
-                <span class="col ">Mail</span>
-                <span class="col-2 ">Action</span>
-                <span class="col-2 text-end">Facture</span>
+                <span class="col-3 ">Nom</span>
+                <span class="col-3 ">Mail</span>
+                <span class="col-2 ">Info</span>
+                <span class="col-2 ">Facture</span>
             </div>
             <ul class="list-group list-group-flush">
                 {% for clients in results.items %}
                     <li class="list-group-item ">
                         <div class="d-flex flex-row">
                             <span class="col-1 ">{{ loop.index }}</span>
-                            <span class="col-2 " id="nom_{{ clients.id }}">{{ clients.nom[:15] }}</span>
-                            <span class="col-2 d-none d-md-block " id="prenom_{{ clients.id }}">{{ clients.prenom[:15] }}</span>
-                            <span class="d-none " id="adresse_{{ clients.id }}">{{ clients.adresse }}</span>
-                            <span class=" d-none " id="code_{{ clients.id }}">{{ clients.code_postal }}</span>
-                            <span class="col " id="mail_{{ clients.id }}">{{ clients.mail }}</span>
-                            <span class=" d-none " id="no_tel_{{ clients.id }}">{{ clients.no_tel }}</span>
+                            <span class="col-3 " id="nom_{{ clients.id }}">{{ clients.prenom[:12] }} {{ clients.nom[:12] }}</span>
+                            <span class="col-3 " id="mail_{{ clients.id }}">{{ clients.mail[:25] }}</span>
                             <span class="col-2 ">
-                                <button id="modif_{{ clients.id }}" class="btn" onclick="InformationClient(this)"><i class="fa fa-info-circle mt-n2" ></i>
+                                <button id="modif_{{ clients.id }}" class="btn btn-outline-success btn-small " onclick="InformationClient(this)">
+                                    <i class="fa fa-info-circle mt-n2" ></i>
+                                    Info client
+                                </button>
                             </span>
-                            <span class="col-2 text-end">
-                                <button id="factureInfo_{{ clients.id }}" class="btn" onclick="nouvelleFacture(this)">
+                            <span class="col-2 ">
+                                <button id="infofact_{{ clients.id }}" class="btn btn-outline-success"style="width:160px;" onclick="InfoFacture(this)">
                                     {% if clients.bill|length >= 1 %}
-                                        <i class="fa fa-file-text-o mt-n2"style="color:green" >
                                             <span class="badge rounded-pill bg-success">
-                                            {{ clients.bill|length }} 
-                                        </i>
+                                                {{ clients.bill|length }} 
+                                            </span>
                                     {% else %}
-                                        <i class="fa fa-file-text-o mt-n2"style="color:black" ></i>
-                                    {% endif %}
+                                        <i class="fa fa-file-text-o mt-n2" ></i>
+                                    {% endif %} 
+                                    Info facture
+                                </button>
                             </span>
                         </div>
                    </li> 
