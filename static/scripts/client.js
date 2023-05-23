@@ -173,11 +173,6 @@ function InfoFacture(id){
     event.preventDefault()
     var client_id = (id.id).split("_")[1]
     console.log('infoFacture')
-    url = "/factures/" + client_id
-    fetch(url,{
-        method:"GET", 
-        headers: {"Content-Type" : "application/json"},
-        mode: 'cors',
-        }
-    )
+    url = "/factures/" + client_id + "?page=1&size=10"
+    window.location.replace(url)
 }
