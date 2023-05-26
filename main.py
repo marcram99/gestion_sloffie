@@ -95,10 +95,10 @@ async def read_all_facture(request: Request,
                            db: Session = Depends(get_db)
                            ) -> Page[schema.Facture]:
     resultat = paginate(db, select(models.Facture).order_by(models.Facture.timestamp))
-    print(f'DEBUG-FACTURE_{resultat}')
     return templates.TemplateResponse("facture.html",
                                       {"request": request,
                                        "results": resultat,
+                                       "mode": "all",
                                        }
                                       )
 
@@ -109,12 +109,12 @@ async def read_client_facture(client_id: int,
                               db: Session = Depends(get_db)
                               ) -> Page[schema.Facture]:
     resultat = paginate(db, select(models.Facture).filter(models.Facture.user_id == client_id).order_by(models.Facture.timestamp))
-    client_info = select(models.Client).filter(models.Client.id == client_id)
-    print(f'DEBUG-FACTURE_{resultat}')
+    client_info = crud.get_client_by_id(db, client_id)
     return templates.TemplateResponse("facture.html",
                                       {"request": request,
                                        "results": resultat,
-                                       "info_client":client_info,
+                                       "mode": "client",
+                                       "info_client": client_info,
                                        }
                                       )
 
