@@ -12,6 +12,7 @@ from sqlalchemy import select
 
 from .database import SessionLocal, engine
 from . import models, schema, crud
+from . import facture_pdf
 
 models.Base.metadata.create_all(bind=engine)
 
@@ -132,3 +133,12 @@ async def new_facture(client_id: int,
     facture.user_id = client_id
     bill = crud.create_facture(db, facture=facture)
     return bill
+
+@app.post("/generate_pdf/{client_id}")
+async def pdf_facture(client_id: int,
+                      request: Request,
+                      db: Session = Depends(get_db)
+                      ): 
+    print(f'PDF for {client_id}')
+    facture_pdf.generate_pdf('XXX_test')
+    return 'hello word'

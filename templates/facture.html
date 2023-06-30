@@ -32,6 +32,9 @@
                                 <span class="col " >{{ fact.timestamp }}</span>
                                 <span class="col " >{{ fact.user_id }}</span>
                                 <span class="col " >{{ fact.prix }}</span>
+                                <span id="pdf_{{ fact.id }}" class="btn btn-outline-success btn-small " onclick="generate_pdf(this)">
+                                    <i class="fa fa-file-text-o mt-n2" ></i>
+                                </span>
                             </div>
                        </li> 
                     {% endfor %}
