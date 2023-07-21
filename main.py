@@ -111,6 +111,7 @@ async def read_client_facture(client_id: int,
                               ) -> Page[schema.Facture]:
     resultat = paginate(db, select(models.Facture).filter(models.Facture.user_id == client_id).order_by(models.Facture.timestamp))
     client_info = crud.get_client_by_id(db, client_id)
+    print(f"DEBUG-FACT:{type(client_info)}")
     return templates.TemplateResponse("facture.html",
                                       {"request": request,
                                        "results": resultat,
@@ -136,9 +137,10 @@ async def new_facture(client_id: int,
 
 @app.post("/generate_pdf/{client_id}")
 async def pdf_facture(client_id: int,
-                      request: Request,
                       db: Session = Depends(get_db)
                       ): 
-    print(f'PDF for {client_id}')
-    facture_pdf.generate_pdf('XXX_test')
+    client = crud.get_client_by_id(db, client_id)
+    print(f"DEBUG_MAIN-PDF: {type(client)}")
+#    print(f'PDF for {client.nom} {client.prenom}')
+#    facture_pdf.generate_pdf(client)
     return 'hello word'

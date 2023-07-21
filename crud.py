@@ -6,6 +6,7 @@ from . import models, schema
 
 def get_client_by_id(db: Session, id: int):
     print(f'DEBUG: crud_get_user: id = {id}')
+    db_request =  db.query(models.Client).filter(models.Client.id == id).first()
     return db.query(models.Client).filter(models.Client.id == id).first()
 
 
