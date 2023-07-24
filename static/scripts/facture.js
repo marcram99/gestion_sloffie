@@ -7,8 +7,9 @@ function closeModal(){
 
 function generate_pdf(id){
     event.preventDefault()
+    var fact_id = (id.id).split("_")[2]
     var client_id = (id.id).split("_")[1]
-    console.log('facure no: ' + client_id)
+    console.log('facure no: ' + fact_id + ' pour client no: ' + client_id)
     fetch("/generate_pdf/" + client_id,{
         method:"POST", 
         headers: {"Content-Type" : "application/json"},

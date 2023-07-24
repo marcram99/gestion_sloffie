@@ -47,9 +47,9 @@ def generate_pdf(client: schema.Client):
     c.setFont("Times-Roman", 12)
     c.drawString(50, haut - 1 * step, f"{client.prenom} {client.nom}")
     c.drawString(50, haut - 2 * step, f"{client.adresse}")
-    c.drawString(50, haut - 3 * step, f"{client.code_postal} {client.ville}")
+    c.drawString(50, haut - 3 * step, f"{client.code_postal} {client.code_postal}")
     c.drawString(50, haut - 4 * step, f"{client.mail}")
-    c.drawString(50, haut - 5 * step, f"{client.no_tel}")
+    c.drawString(50, haut - 5 * step, f"tel: {client.no_tel}")
     """
     c.drawString(50, haut - 1 * step, f"{client['prenom']} {client['nom']}")
     c.drawString(50, haut - 2 * step, f"{client['adresse']}")

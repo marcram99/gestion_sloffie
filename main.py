@@ -141,6 +141,5 @@ async def pdf_facture(client_id: int,
                       ): 
     client = crud.get_client_by_id(db, client_id)
     print(f"DEBUG_MAIN-PDF: {type(client)}")
-#    print(f'PDF for {client.nom} {client.prenom}')
-#    facture_pdf.generate_pdf(client)
-    return 'hello word'
+    print(f'PDF for {client.nom} {client.prenom}')
+    facture_pdf.generate_pdf(client)
