@@ -56,7 +56,7 @@ async def read_all_client(request: Request,
 async def create_user(client: schema.ClientCreate,
                       db: Session = Depends(get_db)
                       ):
-    print(f'DEBUG:POST {client.nom=} {client.prenom=} ')
+    print(f'DEBUG_MAIN:Cree user {client.nom=} {client.ville=} ')
     return crud.create_client(db=db, client=client)
 
 
@@ -64,10 +64,10 @@ async def create_user(client: schema.ClientCreate,
 async def info_user(client_id: int,
                     db: Session = Depends(get_db)
                     ) -> schema.Client:
-    print(f'DEBUG: {client_id=} ')
+    print(f'DEBUG_MAIN: {client_id=} ')
     result = crud.get_client_by_id(db, client_id)
-    print(f'DEBUG_found: {result} ')
-    print(f'DEBUG_found: {type(result)=} ')
+    print(f'DEBUG_MAIN_found: {result} ')
+    print(f'DEBUG_MAIN_found: {type(result)=} ')
     return result
 
 
@@ -76,7 +76,7 @@ async def update_user(client_id: int,
                       client: schema.ClientCreate,
                       db: Session = Depends(get_db)
                       ):
-    print(f'DEBUG:PUT {client.nom=} {client.prenom=} ')
+    print(f'DEBUG_MAIN:PUT {client.nom=} {client.prenom=} ')
     return crud.update_client(db, client, client_id)
 
 
@@ -111,7 +111,6 @@ async def read_client_facture(client_id: int,
                               ) -> Page[schema.Facture]:
     resultat = paginate(db, select(models.Facture).filter(models.Facture.user_id == client_id).order_by(models.Facture.timestamp))
     client_info = crud.get_client_by_id(db, client_id)
-    print(f"DEBUG-FACT:{type(client_info)}")
     return templates.TemplateResponse("facture.html",
                                       {"request": request,
                                        "results": resultat,
@@ -119,27 +118,28 @@ async def read_client_facture(client_id: int,
                                        "info_client": client_info,
                                        }
                                       )
+ 
 
-
-@app.post("/factures/{client_id}")
+@app.post("/factures/{client_id}") 
 async def new_facture(client_id: int,
+                      data: schema.FactureCreate,
                       db: Session = Depends(get_db)
                       ):
     client = crud.get_client_by_id(db, client_id)
     print(f'new facture for no: {client.prenom} {client.nom}')
-    facture = schema.FactureCreate
-    facture.timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-    facture.produit = "Forfait 10 cours"
-    facture.prix = "100 CHF"
-    facture.user_id = client_id
-    bill = crud.create_facture(db, facture=facture)
+    print(f'new facture: {data.produit=}')
+    #data.timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+    print(f'DEBUG-MAIN: {data.date_facture=}')
+    bill = crud.create_facture(db, facture=data)
     return bill
 
-@app.post("/generate_pdf/{client_id}")
+@app.post("/generate_pdf/{client_id}/{fact_id}")
 async def pdf_facture(client_id: int,
-                      db: Session = Depends(get_db)
+                      fact_id: str,
+                      db: Session = Depends(get_db),
                       ): 
     client = crud.get_client_by_id(db, client_id)
-    print(f"DEBUG_MAIN-PDF: {type(client)}")
-    print(f'PDF for {client.nom} {client.prenom}')
-    facture_pdf.generate_pdf(client)
+    facture = crud.get_facture_by_id(db, fact_id)
+    print(f"DEBUG_MAIN-PDF: {fact_id=}")
+    print(f'PDF for {client.nom} {client.prenom}/{facture.produit}')
+    facture_pdf.generate_pdf(client, facture)

@@ -4,22 +4,14 @@ from datetime import datetime, date, timedelta
 
 from . import schema
 
-def generate_pdf(client: schema.Client):
+def generate_pdf(client: schema.Client,
+                 facture: schema.Facture):
+    print(f'DEBUG-Wellcome to PDF generator')
     w, h = A4
     step = 13
     # Données facture
-    no_fact = "FSMCC_00001"
-    date_fact = "31.12.2023"
-    """
-    client = {'nom': nom,
-            'prenom':'Marc',
-            'adresse':"141 ch. de l'Eau Belle",
-            'code_postal':'74100',
-            'ville': 'Etrembières',
-            'mail': 'marcram@proton.me',
-            'no_tel': '+4176 615 6408'
-            }
-            """
+    no_fact = f"FSMCC_{facture.id:0>4}"
+    date_fact = facture.timestamp
     # Entête (ligne 1)
     c = canvas.Canvas(f"facture_{no_fact}.pdf", pagesize=A4)
     c.drawImage("logo.jpg", 30, h - 70, width=100, height=45)

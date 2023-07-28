@@ -5,7 +5,7 @@ from . import models, schema
 
 
 def get_client_by_id(db: Session, id: int):
-    print(f'DEBUG: crud_get_user: id = {id}')
+    print(f'DEBUG_CRUD:get_client_by_id : {id}')
     db_request =  db.query(models.Client).filter(models.Client.id == id).first()
     return db.query(models.Client).filter(models.Client.id == id).first()
 
@@ -15,12 +15,13 @@ def get_all_clients(db: Session, skip: int = 0, limit: int = 100):
 
 
 def create_client(db: Session, client: schema.ClientCreate):
-    print(f'DEBUG:crud-create_client: {client=}')
+    print(f'DEBUG_CRUD:create_client: {client=}')
     db_client = models.Client(nom=client.nom,
                               prenom=client.prenom,
                               no_tel=client.no_tel,
                               mail=client.mail,
                               adresse=client.adresse,
+                              ville=client.ville,
                               code_postal=client.code_postal)
     db.add(db_client)
     db.commit()
@@ -34,6 +35,7 @@ def update_client(db: Session, modif: schema.ClientCreate, client_id: int):
     db_client.prenom = modif.prenom
     db_client.adresse = modif.adresse
     db_client.code_postal = modif.code_postal
+    db_client.ville = modif.ville
     db_client.mail = modif.mail
     db_client.no_tel = modif.no_tel
     db.commit()
@@ -47,9 +49,12 @@ def delete_client(db: Session, client_id: int):
     return {"action": "user_deleted"}
 
 
-def create_facture(db: Session, facture: schema.FactureCreate):
-    print(f'DEBUG:crud-create_facture: {facture=}')
-    db_facture = models.Facture(timestamp=facture.timestamp,
+def create_facture(db: Session, facture: schema.Facture):
+    print(f'DEBUG_CRUD:create_facture: {facture=}')
+    db_facture = models.Facture(
+                                #timestamp=facture.timestamp,
+                                fact_date=facture.date_facture,
+                                timestamp=facture.date_facture,
                                 produit=facture.produit,
                                 prix=facture.prix,
                                 user_id=facture.user_id
@@ -58,3 +63,16 @@ def create_facture(db: Session, facture: schema.FactureCreate):
     db.commit()
     db.refresh(db_facture)
     return db_facture
+
+def get_facture_by_id(db: Session, fact_id: int):
+    print(f'DEBUG_CRUD:get_facture_by_id: {fact_id=}')
+    rec = db.query(models.Facture).filter(models.Facture.id == fact_id).first()
+    return rec
+
+
+def delete_facture(db: Session, fact_id: int):
+    print(f'DEBUG_CRUD:del_facture: {fact_id=}')
+    rec = db.query(models.Facture).filter(models.Facture.id == fact_id).first()
+    db.delete(rec)
+    db.commit()
+    return {"action": "facture_deleted"}

@@ -1,6 +1,26 @@
+from datetime import datetime, date
 from typing import List, Optional
 from pydantic import BaseModel
 
+
+class FactureBase(BaseModel):
+    date_facture: Optional[str]
+    #timestamp: Optional[datetime] 
+    produit:Optional[str] = None
+    remise: Optional[str] = None
+    prix: Optional[str] = None
+    user_id: int
+
+
+class FactureCreate(FactureBase):
+    pass
+
+
+class Facture(FactureBase):
+    id: int
+
+    class Config:
+        orm_mode = True
 
 class CoursBase(BaseModel):
     timestamp: str
@@ -19,24 +39,6 @@ class Cours(CoursBase):
     class Config:
         orm_mode = True
 
-
-class FactureBase(BaseModel):
-    timestamp: str
-    produit: str
-    remise: Optional[str] = None
-    prix: str
-    user_id: int
-
-
-class FactureCreate(BaseModel):
-    pass
-
-
-class Facture(FactureBase):
-    id: int
-
-    class Config:
-        orm_mode = True
 
 
 class ClientBase(BaseModel):
@@ -61,3 +63,6 @@ class Client(ClientBase):
 
     class Config:
         orm_mode = True
+
+
+

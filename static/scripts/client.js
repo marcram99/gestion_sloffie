@@ -45,6 +45,8 @@ function InformationClient(id){
     document.getElementById("adresseMod").value = data.adresse
     document.getElementById("clientCodeAff").innerHTML = data.code_postal
     document.getElementById("codeMod").value = data.code_postal
+    document.getElementById("clientVilleAff").innerHTML = data.ville
+    document.getElementById("villeMod").value = data.ville
     document.getElementById("clientMailAff").innerHTML = data.mail
     document.getElementById("mailMod").value = data.mail
     document.getElementById("clientTelAff").innerHTML = data.no_tel
@@ -113,10 +115,11 @@ function validUserform(id){
     var prenom = document.getElementById("prenomMod").value
     var adresse = document.getElementById("adresseMod").value
     var code = document.getElementById("codeMod").value
+    var ville = document.getElementById("villeMod").value
     var tel = document.getElementById("telMod").value
     var mail = document.getElementById("mailMod").value
     var mode = document.getElementById("modal_title").innerHTML
-    var reponse = {"nom": nom, "prenom": prenom, "adresse": adresse, "code_postal": code, "no_tel": tel, "mail":mail}
+    var reponse = {"nom": nom, "prenom": prenom, "adresse": adresse, "code_postal": code,"ville": ville, "no_tel": tel, "mail":mail}
     if (mode == "Nouveau Client"){
         sendUserData(reponse, "POST", null)
     } if (mode == "Modification Client"){
@@ -137,9 +140,11 @@ function sendUserData(data, method, id){
     console.log('prenom= ' + data.prenom)
     console.log('adresse= ' + data.adresse)
     console.log('code= ' + data.code_postal)
+    console.log('ville= ' + data.ville)
     console.log('tel= ' + data.no_tel)
     console.log('mail= ' + data.mail)
     console.log('ID= ' + id)
+    alert('check console')
     if(id){
         var url = '/client/'+ id
     }else{
