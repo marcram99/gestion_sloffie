@@ -5,6 +5,53 @@ function closeModal(){
     window.location.reload()
 }
 
+function changeLock(){
+    var icone = document.getElementById('lockIcon').className
+    if(icone == "fa fa-unlock-alt mt-n4"){
+        document.getElementById("modal_title").innerHTML = "Information Facture"
+        document.getElementById('lockIcon').className = "fa fa-lock mt-n4"
+        document.getElementById('formEdit').className = "d-none"
+        document.getElementById('formAff').className = "d-block"
+        document.getElementById('deleteFact').className = "btn btn-danger d-none"
+        document.getElementById('validFact').className = "btn btn-success d-none"
+    } else {
+        document.getElementById("modal_title").innerHTML = "Modification facture"
+        document.getElementById('lockIcon').className = "fa fa-unlock-alt mt-n4"
+        document.getElementById('formEdit').className = "d-block"
+        document.getElementById('formAff').className = "d-none"
+        document.getElementById('deleteFact').className = "btn btn-danger d-block"
+        document.getElementById('validFact').className = "btn btn-success d-block"
+    }
+}
+
+function InformationFacture(id){
+    event.preventDefault()
+    var fact_id = (id.id).split("_")[1]
+    console.log('you click on facture : ' + fact_id)
+    url = "/facture/" + fact_id
+    fetch(url,{
+        method:"POST", 
+        headers: {"Content-Type" : "application/json"},
+        mode: 'cors',
+        }
+    )
+    .then((resp) => resp.json())
+    .then(function(data) {
+    document.getElementById("produitAff").innerHTML = data.produit
+    document.getElementById("produitMod").value = data.produit
+    document.getElementById("dateAff").innerHTML = data.timestamp
+    document.getElementById("dateMod").value = data.timestamp
+    document.getElementById("prixAff").innerHTML = data.prix
+    document.getElementById("prixMod").value = data.prix
+    document.getElementById("remiseAff").innerHTML = data.remise
+    document.getElementById("remiseMod").value = data.remise
+    })
+    $('#fact_modal').modal('show')
+    document.getElementById("modal_title").innerHTML = "Information Facture"
+   document.getElementById("factInfo_id").innerHTML = fact_id
+}
+
+
 function creeFacture(id){
     var client_id = (id.id).split("_")[1]
     console.log('new facture for: ' + client_id)
@@ -13,13 +60,22 @@ function creeFacture(id){
     document.getElementById("lockIcon").className = "d-none"
     document.getElementById("formAff").className = "d-none"
     document.getElementById("formEdit").className = "d-block"
-    document.getElementById("createUser").className = "btn btn-success d-block"
+    document.getElementById("createFact").className = "btn btn-success d-block"
     document.getElementById("dateAff").value = ""
     document.getElementById("produitAff").value = ""
     document.getElementById("prixAff").value = ""
     document.getElementById("remiseAff").value = ""
 }
 
+function effaceFacture(){
+    event.preventDefault()
+    var fact_id = document.getElementById("factInfo_id").innerHTML
+    fetch('/facture/' + fact_id,{
+        method: "DELETE",
+    })
+    closeModal()
+}
+    
 function validFactForm(){
     var date = document.getElementById("dateMod").value
     var produit = document.getElementById("produitMod").value
@@ -27,38 +83,32 @@ function validFactForm(){
     var remise = document.getElementById("remiseMod").value
     var mode = document.getElementById("modal_title").innerHTML
     var user_id = document.getElementById("user_id").innerHTML
-    var reponse = {"date_facture": date, "produit": produit, "prix": prix, "remise": remise, "user_id": user_id}
-    var fact_id = null
+    var fact_id = document.getElementById("factInfo_id").innerHTML
+    var data = {"timestamp": date, "produit": produit, "prix": prix, "remise": remise, "user_id": user_id}
     if (mode == "Nouvelle facture"){
-        sendUserData(reponse, "POST", user_id, fact_id)
+        var url = '/factures/' + user_id
+        var method = 'POST'
+        sendUserData(url, method, data)
     } if (mode == "Modification facture"){
-        var fact_id = document.getElementById("fact_id").innerHTML
-        sendUserData(reponse, "PUT", user_id, fact_id)
+        var url = '/facture/' + fact_id
+        var method = 'PUT'
+        sendUserData(url, method, data)
     } else {
         console.log('ELSE')
     }
-    console.log('debug' + reponse)
     $('#user_modal').modal('hide')
     window.location.reload()
 }
 
-function sendUserData(data, method, user_id, fact_id){ 
+function sendUserData(url, method, data){ 
     event.preventDefault()
-    console.log('DEBUG_SendUserData: ' + method)
-    console.log('date= ' + data.date_facture)
+    console.log('DEBUG_SendUserData:')
+    console.log('date= ' + data.timestamp)
     console.log('produit= ' + data.produit)
     console.log('prix= ' + data.prix)
     console.log('remise= ' + data.remise)
-    console.log('User_id = ' + data.user_id)
-    console.log('Fact_id = ' + fact_id)
-    if(fact_id){
-        var url = '/factures/'+ user_id + '/' + fact_id
-    }else{
-        var url = '/factures/'+ user_id
-    }
     console.log('url=' + method +':' + url)
     console.log('data=' + data)
-    alert('Check Console')
     fetch(url,{
         method:method, 
         headers: {"Content-Type" : "application/json"},
@@ -69,7 +119,6 @@ function sendUserData(data, method, user_id, fact_id){
         }
     )
 }
-
 
 function generate_pdf(id){
     event.preventDefault()

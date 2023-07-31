@@ -144,7 +144,6 @@ function sendUserData(data, method, id){
     console.log('tel= ' + data.no_tel)
     console.log('mail= ' + data.mail)
     console.log('ID= ' + id)
-    alert('check console')
     if(id){
         var url = '/client/'+ id
     }else{

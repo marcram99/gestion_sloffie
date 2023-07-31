@@ -49,14 +49,20 @@ def delete_client(db: Session, client_id: int):
     return {"action": "user_deleted"}
 
 
+def get_facture_by_id(db: Session, fact_id: int):
+    print(f'DEBUG_CRUD:get_facture_by_id: {fact_id=}')
+    rec = db.query(models.Facture).filter(models.Facture.id == fact_id).first()
+    return rec
+
+
 def create_facture(db: Session, facture: schema.Facture):
     print(f'DEBUG_CRUD:create_facture: {facture=}')
     db_facture = models.Facture(
-                                #timestamp=facture.timestamp,
-                                fact_date=facture.date_facture,
-                                timestamp=facture.date_facture,
+                                timestamp=facture.timestamp,
+                                date_fact=facture.date_facture,
                                 produit=facture.produit,
                                 prix=facture.prix,
+                                remise=facture.remise,
                                 user_id=facture.user_id
                                 )
     db.add(db_facture)
@@ -64,10 +70,14 @@ def create_facture(db: Session, facture: schema.Facture):
     db.refresh(db_facture)
     return db_facture
 
-def get_facture_by_id(db: Session, fact_id: int):
-    print(f'DEBUG_CRUD:get_facture_by_id: {fact_id=}')
-    rec = db.query(models.Facture).filter(models.Facture.id == fact_id).first()
-    return rec
+def update_facture(db: Session, modif: schema.FactureCreate, fact_id: int):
+    db_facture = db.query(models.Facture).filter(models.Facture.id == fact_id).first()
+    db_facture.timestamp = modif.timestamp
+    db_facture.produit = modif.produit
+    db_facture.prix = modif.prix
+    db_facture.remise = modif.remise
+    db.commit()
+    return {"update": "finished"}
 
 
 def delete_facture(db: Session, fact_id: int):

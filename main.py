@@ -109,11 +109,11 @@ async def read_client_facture(client_id: int,
                               request: Request,
                               db: Session = Depends(get_db)
                               ) -> Page[schema.Facture]:
-    resultat = paginate(db, select(models.Facture).filter(models.Facture.user_id == client_id).order_by(models.Facture.timestamp))
+    facture_info = paginate(db, select(models.Facture).filter(models.Facture.user_id == client_id).order_by(models.Facture.timestamp))
     client_info = crud.get_client_by_id(db, client_id)
     return templates.TemplateResponse("facture.html",
                                       {"request": request,
-                                       "results": resultat,
+                                       "results": facture_info,
                                        "mode": "client",
                                        "info_client": client_info,
                                        }
@@ -132,6 +132,33 @@ async def new_facture(client_id: int,
     print(f'DEBUG-MAIN: {data.date_facture=}')
     bill = crud.create_facture(db, facture=data)
     return bill
+
+
+@app.post("/facture/{fact_id}") 
+async def new_facture(fact_id: int,
+                      db: Session = Depends(get_db)
+                      ):
+    facture = crud.get_facture_by_id(db, fact_id)
+    print(f'read facture: {facture.id=}')
+    return facture
+
+
+@app.put("/facture/{fact_id}") 
+async def update_facture(fact_id: int,
+                         data: schema.FactureCreate,
+                         db: Session = Depends(get_db)
+                         ):
+    facture = crud.update_facture(db, data, fact_id)
+    print(f'update facture: {facture.id=}')
+    return facture
+
+@app.delete("/facture/{fact_id}")
+async def delete_facture(fact_id: int,
+                         db: Session = Depends(get_db)
+                         ):
+    result = crud.delete_facture(db, fact_id)
+    return result
+
 
 @app.post("/generate_pdf/{client_id}/{fact_id}")
 async def pdf_facture(client_id: int,

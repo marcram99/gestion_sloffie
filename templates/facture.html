@@ -29,11 +29,14 @@
                         <li class="list-group-item ">
                             <div class="d-flex flex-row">
                                 <span class="col-1 ">{{ loop.index }}</span>
-                                <span class="col " >{{ fact.fact_date }}</span>
                                 <span class="col " >{{ fact.timestamp }}</span>
+                                <span class="col " >{{ fact.produit }}</span>
                                 <span class="col " >{{ fact.prix }} CHF</span>
+                                <span id="info_{{ fact.id }}" class="btn btn-outline-success btn-small " onclick="InformationFacture(this)">
+                                    <i class="fa fa-info-circle mt-n2" ></i>
+                                </span>
                                 <span id="pdf_{{ info_client.id }}_{{ fact.id }}" class="btn btn-outline-success btn-small " onclick="generate_pdf(this)">
-                                    <i class="fa fa-file-text-o mt-n2" ></i>
+                                    <i class="fa fa-file-pdf-o mt-n2" ></i>
                                 </span>
                             </div>
                        </li> 
@@ -86,7 +89,7 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title"><span id="modal_title">Nouvelle facture</span><span> pour: {{ info_client.nom }} {{ info_client.prenom }}</span></h5>
-                    <h5  id="user_id" class="d-none">{{ info_client.id }}</h5>
+                    <h5 class="d-none"><span  id="user_id" >{{ info_client.id }}</span><span id="factInfo_id"{{ results.id }}></span></h5>
                     <div class="row d-flex justify-content-between">
                         <div class="btn" onclick="changeLock(this)"><i id="lockIcon"class="fa fa-lock mt-n4" style="font-size:35px;color:lightgrey;"></i></div>
                     </div>
@@ -96,7 +99,7 @@
                         <div class="mb-3 row"style="height:40px;">
                             <div class="col-3 text-end pt-2">Date:</div>
                             <div class="col">
-                                <input type="text" class="form-control text-start pt-2" id="dateMod" >
+                                <input type="date" class="form-control text-start pt-2" id="dateMod" >
                             </div>
                         </div>
                         <div class="mb-3 row"style="height:40px;">
@@ -138,9 +141,9 @@
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button"id="validUser" class="btn btn-success d-none" onclick="validUserform(this)"><i class="fa fa-lg fa-pencil m-2" ></i>Modify</button>
-                    <button type="button"id="deleteUser" class="btn btn-danger d-none" onclick="effaceClient(this)"><i class="fa fa-lg fa-trash-o m-2 ml-1" ></i>Delete</button>
-                    <button type="button"id="createUser" class="btn btn-success d-none" onclick="validFactForm(this)"><i class="fa fa-lg fa-pencil m-2 ml-1" ></i>Create</button>
+                    <button type="button"id="validFact" class="btn btn-success d-none" onclick="validFactForm(this)"><i class="fa fa-lg fa-pencil m-2" ></i>Modify</button>
+                    <button type="button"id="deleteFact" class="btn btn-danger d-none" onclick="effaceFacture(this)"><i class="fa fa-lg fa-trash-o m-2 ml-1" ></i>Delete</button>
+                    <button type="button"id="createFact" class="btn btn-success d-none" onclick="validFactForm(this)"><i class="fa fa-lg fa-pencil m-2 ml-1" ></i>Create</button>
                     <button type="button" class="btn btn-secondary" onclick="closeModal()"><i class="fa fa-lg fa-close m-2 ml-1" ></i>Cancel</button>
                 </div>
             </div> 
