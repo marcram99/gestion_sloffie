@@ -59,7 +59,6 @@ def create_facture(db: Session, facture: schema.Facture):
     print(f'DEBUG_CRUD:create_facture: {facture=}')
     db_facture = models.Facture(
                                 timestamp=facture.timestamp,
-                                date_fact=facture.date_facture,
                                 produit=facture.produit,
                                 prix=facture.prix,
                                 remise=facture.remise,

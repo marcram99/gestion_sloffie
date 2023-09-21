@@ -12,7 +12,7 @@ from sqlalchemy import select
 
 from .database import SessionLocal, engine
 from . import models, schema, crud
-from . import facture_pdf
+from . import new_pdf
 
 models.Base.metadata.create_all(bind=engine)
 
@@ -90,7 +90,11 @@ async def delete_user(client_id: int,
         result = crud.delete_client(db, client_id)
     return result
 
-
+@app.get("/catalogue")
+async def catalogue(request:Request):
+    return templates.TemplateResponse("catalogue.html",
+                                      {"request":request,
+                                       })
 @app.get("/factures")
 async def read_all_facture(request: Request,
                            db: Session = Depends(get_db)
@@ -129,7 +133,6 @@ async def new_facture(client_id: int,
     print(f'new facture for no: {client.prenom} {client.nom}')
     print(f'new facture: {data.produit=}')
     #data.timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-    print(f'DEBUG-MAIN: {data.date_facture=}')
     bill = crud.create_facture(db, facture=data)
     return bill
 
@@ -169,4 +172,5 @@ async def pdf_facture(client_id: int,
     facture = crud.get_facture_by_id(db, fact_id)
     print(f"DEBUG_MAIN-PDF: {fact_id=}")
     print(f'PDF for {client.nom} {client.prenom}/{facture.produit}')
-    facture_pdf.generate_pdf(client, facture)
+    #facture_pdf.generate_pdf(client, facture)
+    new_pdf.generate_pdf(client, facture)

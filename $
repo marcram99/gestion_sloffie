@@ -1,0 +1,116 @@
+from fpdf import FPDF
+from datetime import datetime, date, timedelta
+from os import path
+
+import schema
+
+
+# -- Info facture --
+facture = schema.Facture(id=124,
+                         timestamp='06-06-2023',
+                         produit='cours de chant',
+                         user_id=123)
+client = schema.Client(nom='Wanner',
+                       prenom='Marc',
+                       adresse='144 impasse de la Touvières',
+                       code_postal='74100',
+                       ville='Etrembières',
+                       no_tel='+4176 615 6408',
+                       mail='marcram@proton.me',
+                       id= 666,
+                       )
+no_fact = f"SM_{facture.id:0>4}"
+
+pdf_file = path.join('/Users/mcwa/Marc-perso/code/python_file/gestion_sloffie/static/fichiers/',f'facture_{no_fact}.pdf')
+logo = path.join('/Users/mcwa/Marc-perso/code/python_file/gestion_sloffie/static/images/','logo.jpg')
+
+pdf = FPDF()
+pdf.add_page()
+# -- Entête
+pdf.image(logo, x=9, y=8, h=17)
+pdf.set_line_width(0.5)
+pdf.line(x1=48, y1=20, x2=200, y2=20)
+pdf.set_font(family="Times", style="", size=16)
+pdf.set_text_color(00)
+pdf.cell(190, 10, align='R', txt=f'Facture: {no_fact}') 
+# -- Cartouche Sloffie 
+x, y = 16, 26
+pdf.set_draw_color(180)
+pdf.set_line_width(0.3)
+pdf.set_font(family="Times", style="B", size=12)
+pdf.set_xy(x, y)
+pdf.cell(190, 10, txt='Sloffiemusic-Coaching vocal')
+pdf.set_font(family="Times", style="", size=12)
+pdf.set_xy(x, y+5)
+pdf.cell(190, 10, txt='@My FunMusic School')
+pdf.set_xy(x, y+10)
+pdf.cell(190, 10, txt='Route de Chêne 78')
+pdf.set_xy(x, y+15)
+pdf.cell(190, 10, txt='1224 Chêne-Bougerie')
+pdf.set_xy(x, y+20)
+pdf.cell(190, 10, txt='tel: +4176 313 9103')
+pdf.line(x1=16, y1=60, x2=200, y2=60)
+# -- Informations client
+x, y = 16, 66
+pdf.set_xy(x, y)
+pdf.set_font(family="Times", style="B", size=12)
+pdf.cell(txt='Information client:')
+pdf.set_font(family="Times", style="", size=12)
+pdf.set_xy(x, y+5)
+pdf.cell(txt=f'{client.prenom} {client.nom}')
+pdf.set_xy(x, y+10)
+pdf.cell(txt=f'{client.adresse}')
+pdf.set_xy(x, y+15)
+pdf.cell(txt=f'{client.code_postal} {client.ville}')
+pdf.set_xy(x, y+20)
+pdf.cell(txt=f'{client.mail}')
+pdf.set_xy(x, y+25)
+pdf.cell(txt=f'{client.no_tel}')
+# -- Information facture
+pdf.set_fill_color(230)
+pdf.rect(16, 100, 185, 14, round_corners=True, style="F")
+x, y = 16, 104
+pdf.set_xy(x, y)
+pdf.cell(txt='Article ou service')
+pdf.set_xy(x+80, y)
+pdf.cell(txt='Prix')
+pdf.set_xy(x+120, y)
+pdf.cell(txt='Quantité')
+pdf.set_xy(x+160, y)
+pdf.cell(txt='Total')
+pdf.line(x1=96, y1=167, x2=200, y2=167)
+# -- Information total
+x, y = 96, 170
+pdf.set_xy(x, y)
+pdf.cell(txt='Total de la facture:')
+pdf.set_xy(x + 80, y)
+total = 1000
+pdf.cell(txt=f'{total:0>4}')
+pdf.set_xy(x + 90, y)
+pdf.cell(txt='CHF')
+pdf.set_xy(x, y + 8)
+pdf.cell(txt='Rabais:')
+pdf.set_xy(x + 80, y + 8 )
+total= 100
+pdf.cell(txt=f'{total:>4}')
+pdf.set_xy(x + 90, y + 8)
+pdf.cell(txt='CHF')
+pdf.set_xy(x, y + 16)
+pdf.cell(txt='Montant déjà payé:')
+pdf.set_xy(x + 80, y + 16)
+total = 10
+pdf.cell(txt=f'{total:>4} ')
+pdf.set_xy(x + 90, y + 16)
+pdf.cell(txt='CHF')
+
+pdf.rect(92, 195, 109, 14, round_corners=True, style="F")
+
+pdf.set_xy(x, y + 24)
+pdf.cell(txt='Reste à payer:')
+pdf.set_xy(x + 80, y + 24)
+total = 10
+pdf.cell(txt=f'{total:>4} ')
+pdf.set_xy(x + 90, y + 24)
+pdf.cell(txt='CHF')
+pdf.output(pdf_file)
+

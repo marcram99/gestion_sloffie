@@ -1,6 +1,7 @@
 from reportlab.pdfgen import canvas
 from reportlab.lib.pagesizes import A4
 from datetime import datetime, date, timedelta
+from os import path
 
 from . import schema
 
@@ -10,11 +11,13 @@ def generate_pdf(client: schema.Client,
     w, h = A4
     step = 13
     # Données facture
-    no_fact = f"FSMCC_{facture.id:0>4}"
+    no_fact = f"FSM_{facture.id:0>4}"
     date_fact = facture.timestamp
+    logo = path.join('/Users/mcwa/Marc-perso/code/python/gestion_sloffie/static/images/','logo.jpg')
+    pdf_file = path.join('/Users/mcwa/Marc-perso/code/python/gestion_sloffie/static/fichiers/',f'facture_{no_fact}.pdf')
     # Entête (ligne 1)
-    c = canvas.Canvas(f"facture_{no_fact}.pdf", pagesize=A4)
-    c.drawImage("logo.jpg", 30, h - 70, width=100, height=45)
+    c = canvas.Canvas(pdf_file, pagesize=A4)
+    c.drawImage(logo, 30, h - 70, width=100, height=45)
     c.line(135, h-56, w-30, h-56)
     c.setFont("Times-Roman", 20)
     c.drawString(w-225, h-45,f"Facture: {no_fact}")

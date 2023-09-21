@@ -5,7 +5,6 @@ from pydantic import BaseModel
 
 class FactureBase(BaseModel):
     timestamp: str 
-    date_facture: Optional[str]
     produit :str 
     prix: Optional[str] = None
     remise: Optional[str] = None
@@ -20,7 +19,7 @@ class Facture(FactureBase):
     id: int
 
     class Config:
-        orm_mode = True
+        from_attributes=True
 
 
 class ClientBase(BaseModel):
@@ -43,4 +42,5 @@ class Client(ClientBase):
     bill: List[Facture] = []
 
     class Config:
-        orm_mode = True
+        from_attributes=True
+        #orm_mode = True
