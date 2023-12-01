@@ -9,8 +9,8 @@ def generate_pdf(client: schema.Client,
     # -- Info facture ------------------------------------
     no_fact = f"SM_{facture.id:0>4}"
     panier =[ 
-                ["formule  5 cours", 1, 350],
-                ["formule 10 cours", 1,650],
+    #            ["formule  5 cours", 1, 350],
+                ["formule 10 cours", 1,800],
     #            ["formule  5 cours", 2, 350],
     #            ["formule 10 cours", 1,650],
             ]
@@ -115,14 +115,14 @@ def generate_pdf(client: schema.Client,
     pdf.set_xy(x, y + 7)
     pdf.cell(txt='Rabais:')
     pdf.set_xy(x + 71, y + 7 )
-    rabais= 150
+    rabais= 000
     pdf.cell(w=12, align='R', txt=f'{rabais}')
     pdf.set_xy(x + 92, y + 7)
     pdf.cell(txt='CHF')
     pdf.set_xy(x, y + 14)
     pdf.cell(txt='Montant déjà payé:')
     pdf.set_xy(x + 71, y + 14)
-    acompte = 10
+    acompte = 00
     pdf.cell(w=12, align='R', txt=f'{acompte} ')
     pdf.set_xy(x + 92, y + 14)
     pdf.cell(txt='CHF')
