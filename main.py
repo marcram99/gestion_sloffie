@@ -1,5 +1,6 @@
 from fastapi import FastAPI, Request, Response, Depends
 from fastapi import HTTPException
+from fastapi.responses import FileResponse
 from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
 from fastapi_pagination import add_pagination
@@ -10,11 +11,16 @@ from datetime import datetime
 from sqlalchemy.orm import Session
 from sqlalchemy import select
 
+from pathlib import Path
+
 from .database import SessionLocal, engine
 from . import models, schema, crud
 from . import new_pdf
 
 models.Base.metadata.create_all(bind=engine)
+
+my_folder = Path().home
+print(my_folder)
 
 app = FastAPI()
 add_pagination(app)
@@ -23,7 +29,6 @@ app.mount("/static",
           name="static"
           )
 templates = Jinja2Templates(directory="gestion_sloffie/templates")
-
 
 def get_db():
     db = SessionLocal()
@@ -174,3 +179,8 @@ async def pdf_facture(client_id: int,
     print(f'PDF for {client.nom} {client.prenom}/{facture.produit}')
     #facture_pdf.generate_pdf(client, facture)
     new_pdf.generate_pdf(client, facture)
+
+
+@app.get("/show_pdf",response_class=FileResponse)
+async def affiche_pdf():
+    return my_pdf

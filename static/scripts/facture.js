@@ -133,4 +133,6 @@ function generate_pdf(id){
     )
     .then(window.location.reload())
 }
-
+function show_pdf(){
+    console.log('show pdf')
+}
